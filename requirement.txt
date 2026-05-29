@@ -1,18 +1,30 @@
-# ── Python backend ──────────────────────────────────────────
+# ── Core backend ──────────────────────────────────────────────────────────────
 fastapi
 uvicorn
 python-dotenv
 pypdf
 groq
-sentence-transformers        # embed model + cross-encoder reranker
-rank-bm25                    # BM25 for hybrid search
+sentence-transformers
+rank-bm25
 qdrant-client
 sse-starlette
-pymupdf                      # PDF page rendering for preview feature
-python-multipart             # FastAPI file uploads
+python-multipart
 
-# ── Install ─────────────────────────────────────────────────
-# pip install -r requirements.txt
+# ── Image OCR (FIX #3) ────────────────────────────────────────────────────────
+pymupdf          # PDF page rendering + image block extraction
+pytesseract      # Python wrapper for Tesseract OCR engine
+Pillow           # PIL — image manipulation for OCR input
 
-# ── Frontend (add to package.json / npm install) ─────────────
-# npm install react-markdown remark-gfm react-syntax-highlighter
+# ── Frontend (npm install) ────────────────────────────────────────────────────
+# react-markdown
+# remark-gfm
+# react-syntax-highlighter
+
+# ── Tesseract binary (must be installed separately) ───────────────────────────
+# Ubuntu/Debian:  sudo apt install tesseract-ocr
+# macOS:          brew install tesseract
+# Windows:        https://github.com/UB-Mannheim/tesseract/wiki
+#
+# Optional language packs (e.g. for non-English PDFs):
+#   sudo apt install tesseract-ocr-ben   # Bengali
+#   sudo apt install tesseract-ocr-deu   # German
