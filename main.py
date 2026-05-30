@@ -193,6 +193,8 @@ def _classify_pdf(path: str) -> str:
     """
     Classify PDF type: 'unicode_bangla', 'bijoy', 'image_only', 'english'
     """
+    import fitz as _fitz  # PyMuPDF
+
     reader = PdfReader(path)
     sample_pages = list(reader.pages[:min(5, len(reader.pages))])
 
@@ -202,58 +204,87 @@ def _classify_pdf(path: str) -> str:
 
     total = len(all_text.strip())
 
-    # Almost no text → image-only / scanned
-    if total < 50:
-        return "image_only"
-
-    # Count Unicode Bangla characters (U+0980–U+09FF)
+    # Unicode Bangla check
     unicode_bn = sum(1 for ch in all_text if '\u0980' <= ch <= '\u09ff')
-    bn_ratio   = unicode_bn / total
-    if bn_ratio > 0.15:
+    if unicode_bn > 20 or (unicode_bn / max(total, 1)) > 0.03:
         return "unicode_bangla"
 
-    # ── Bijoy detection ──────────────────────────────────────────────────────
-    # Bijoy PDFs produce one of two patterns after pypdf extraction:
-    #
-    # Pattern A — high-ANSI dump (chars 128–255 outside Bangla Unicode range)
-    #   e.g. characters like †, ‡, ·, ¸, ¹ etc.
-    high_ansi = sum(1 for ch in all_text if 128 <= ord(ch) <= 0x097F)
-    high_ansi_ratio = high_ansi / total
-    if high_ansi_ratio > 0.08:
-        return "bijoy"
+    # ── Check if pages are image-heavy using PyMuPDF ─────────────────────────
+    # This catches PDFs where content is rendered as images (common in
+    # Bangla educational PDFs — text is typeset in image blocks)
+    try:
+        doc = _fitz.open(path)
+        total_pages_checked = min(3, len(doc))
+        image_area   = 0.0
+        page_area    = 0.0
+        text_blocks  = 0
 
-    # Pattern B — looks like ASCII Latin but words are very short and
-    #   contain lots of backtick/pipe/tilde/backslash typical of Bijoy glyph IDs
-    # e.g. "evsjv‡`‡ki bvMwiKMY"
-    bijoy_symbols = sum(1 for ch in all_text if ch in '`~|\\†‡ˆ‰·¸¹º»¼½¾¿')
-    bijoy_sym_ratio = bijoy_symbols / total
-    if bijoy_sym_ratio > 0.02:
-        return "bijoy"
+        for i in range(total_pages_checked):
+            pg       = doc[i]
+            pg_rect  = pg.rect
+            page_area += pg_rect.width * pg_rect.height
 
-    # Pattern C — avg word length < 3 with no real English content
-    words = [w for w in all_text.split() if w.isalpha() and w.isascii()]
-    if words:
-        avg_len = sum(len(w) for w in words) / len(words)
-        # Check against known English words
-        english_common = {
-            'the','and','is','in','of','to','a','that','it','was',
-            'for','on','are','as','with','his','they','at','be','this',
-            'from','or','an','but','not','what','all','were','when','we',
-        }
-        word_set  = set(w.lower() for w in words)
-        eng_hits  = len(word_set & english_common)
-        total_words = len(words)
+            # Count text blocks from PyMuPDF (more accurate than pypdf)
+            blocks = pg.get_text("blocks")
+            for b in blocks:
+                # b[6] == 0 means text block, 1 means image block
+                if b[6] == 0 and len(b[4].strip()) > 10:
+                    text_blocks += 1
 
-        # If avg word length is very short AND very few English hits → Bijoy
-        if avg_len < 3.5 and eng_hits < 5:
+            # Sum area of embedded images
+            for img in pg.get_images(full=True):
+                try:
+                    rects = pg.get_image_rects(img[0])
+                    for r in rects:
+                        image_area += r.width * r.height
+                except Exception:
+                    pass
+
+        doc.close()
+
+        image_ratio = image_area / max(page_area, 1)
+
+        # If images cover > 40% of page area AND very few text blocks → image-based
+        if image_ratio > 0.40 and text_blocks < 5:
+            return "image_only"
+
+        # If images cover > 70% regardless of text blocks → image-based
+        if image_ratio > 0.70:
+            return "image_only"
+
+    except Exception as e:
+        print(f"[classify] PyMuPDF check failed: {e}")
+
+    # Bijoy checks (fallback)
+    if total > 0:
+        high_ansi = sum(1 for ch in all_text if 128 <= ord(ch) <= 0x097F)
+        if high_ansi >= 3:
             return "bijoy"
 
-        # Even if avg length is OK, if basically no English words in a
-        # mostly-Latin document → likely Bijoy glyph dump
-        if total_words > 20 and eng_hits < 3:
-            latin_ratio = len(words) / max(total, 1)
-            if latin_ratio > 0.3:
+        bijoy_symbols = sum(1 for ch in all_text if ch in '©®°±²³´µ¶·¸¹º»¼½¾¿†‡ˆ‰Š‹ŒŽ''""•–—˜™š›œžŸ¡¢£¤¥¦§¨')
+        if bijoy_symbols >= 2:
+            return "bijoy"
+
+        spaced_chars = len(re.findall(r'(?<!\w)\w \w \w(?!\w)', all_text))
+        if spaced_chars >= 2:
+            return "bijoy"
+
+        words = [w for w in all_text.split() if w.isalpha() and w.isascii()]
+        if words:
+            avg_len = sum(len(w) for w in words) / len(words)
+            english_common = {
+                'the','and','is','in','of','to','a','that','it','was',
+                'for','on','are','as','with','his','they','at','be','this',
+                'from','or','an','but','not','what','all','were','when','we',
+            }
+            eng_hits = len(set(w.lower() for w in words) & english_common)
+            if avg_len < 3.5 and eng_hits < 5:
                 return "bijoy"
+            if len(words) > 20 and eng_hits < 3:
+                return "bijoy"
+
+    if total < 100:
+        return "image_only"
 
     return "english"
 
@@ -275,6 +306,9 @@ def extract_pages(path: str) -> list[dict]:
 
     print(f"[extract_pages] type={pdf_type}  total_pages={total}  file={os.path.basename(path)}")
 
+    # For mixed docs, use both native text AND Bengali OCR lang
+    ocr_lang = "ben+eng"
+
     # Warn if OCR is needed but unavailable
     if pdf_type in ("bijoy", "image_only") and not _CAN_OCR:
         print(
@@ -288,7 +322,7 @@ def extract_pages(path: str) -> list[dict]:
 
         # ── Bijoy or image-only: always OCR ──────────────────────────────────
         if pdf_type in ("bijoy", "image_only"):
-            text = _ocr_page_image(path, i)
+            text = _ocr_page_image(path, i, dpi_scale=2.0)
             if not text and pdf_type == "bijoy":
                 # Last-resort: try native extraction in case this page is unicode
                 raw = (page.extract_text() or "").strip()
@@ -303,7 +337,7 @@ def extract_pages(path: str) -> list[dict]:
 
         if not raw or len(raw) < 10 or _is_garbled(raw):
             # Fallback to OCR for pages that failed native extraction
-            ocr_text = _ocr_page_image(path, i)
+            ocr_text = _ocr_page_image(path, i, dpi_scale=2.0)
             if ocr_text and len(ocr_text.strip()) > 5:
                 pages.append({"page": i + 1, "text": ocr_text})
             continue
