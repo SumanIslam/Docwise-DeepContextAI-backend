@@ -728,6 +728,16 @@ def delete_document(cid: str, did: str):
     c.execute("DELETE FROM chat_docs WHERE id=? AND chat_id=?",(did,cid)); c.commit(); c.close()
     return {"status":"deleted"}
 
+    # Detect document + query language for response
+def _detect_response_lang(context: str, query: str) -> str:
+    """Returns 'bangla' if doc/query is Bangla, else 'english'."""
+    bn_in_context = sum(1 for ch in context if '\u0980' <= ch <= '\u09ff')
+    bn_in_query   = sum(1 for ch in query   if '\u0980' <= ch <= '\u09ff')
+    if bn_in_context > 30 or bn_in_query > 3:
+        return "bangla"
+    return "english"
+
+
 # ══════════════════════════════════════════════════════════════════════════════
 # SEARCH + STREAM
 # ══════════════════════════════════════════════════════════════════════════════
@@ -751,34 +761,52 @@ async def search_stream(cid: str, req: SearchRequest):
                 yield {"data":json.dumps({"text":"আমি নির্বাচিত ডকুমেন্টে প্রাসঙ্গিক তথ্য খুঁজে পাইনি। / I could not find relevant information in the selected documents."})}
             return EventSourceResponse(empty2())
         context = "".join(f"[Page {c.payload['page']}]\n{c.payload['text']}\n\n" for c in top_chunks)
+        resp_lang = _detect_response_lang(context, req.query)
         sources  = [] if overview else aggregate_sources(top_chunks)
         history  = _build_history(cid)
         if overview:
-            system_prompt = (
-                "You are a document assistant. The document is written in Bengali (Bangla). "
-                "Produce a comprehensive overview using ONLY the provided context. "
-                "Respond in Bengali (Bangla). "
-                "Structure your response:\n"
-                "- One sentence describing what the document is about\n"
-                "- ## headings for major sections or topics found in the document\n"
-                "- Bullet points for specific facts, articles, or provisions\n"
-                "- **Bold** for important terms\n"
-                "- A 'মূল বিষয়সমূহ' (Key Takeaways) section at the end\n"
-                "Do NOT make up content. Only use what is in the context. "
-                "Do NOT mention page numbers or filenames."
-            )
+            if resp_lang == "bangla":
+                system_prompt = (
+                    "You are a document assistant. "
+                    "Produce a comprehensive overview using ONLY the provided context. "
+                    "Respond in Bengali (Bangla). "
+                    "Structure: one sentence about the document, ## headings for major topics, "
+                    "bullet points for key facts, **bold** for important terms, "
+                    "end with 'মূল বিষয়সমূহ' section. "
+                    "Do NOT mention page numbers or filenames."
+                )
+            else:
+                system_prompt = (
+                    "You are a document assistant. "
+                    "Produce a comprehensive overview using ONLY the provided context. "
+                    "Respond in English. "
+                    "Structure: one sentence about the document, ## headings for major topics, "
+                    "bullet points for key facts, **bold** for important terms, "
+                    "end with 'Key Takeaways' section. "
+                    "Do NOT mention page numbers or filenames."
+                )
         else:
-            system_prompt = (
-                "You are a precise document assistant. "
-                "The document is written in Bengali (Bangla). "
-                "Answer in the same language as the question: "
-                "Bangla question → Bangla answer, English question → English answer. "
-                "Answer ONLY from the provided context. "
-                "If the answer is not in the context, say so clearly. "
-                "Use **bold** for key terms, bullet lists for multiple points, "
-                "code blocks for code. "
-                "Do NOT mention filenames or page numbers. Be direct and concise."
-            )
+            if resp_lang == "bangla":
+                system_prompt = (
+                    "You are a precise document assistant. "
+                    "Answer ONLY from the provided context. "
+                    "Respond in Bengali (Bangla) if the document or question is in Bangla, "
+                    "otherwise respond in English. "
+                    "If the answer is not in the context, say so in the same language. "
+                    "Use **bold** for key terms, bullet lists for multiple points. "
+                    "Do NOT mention filenames or page numbers."
+                )
+            else:
+                system_prompt = (
+                    "You are a precise document assistant. "
+                    "Answer ONLY from the provided context. "
+                    "Respond in English. "
+                    "If the answer is not in the context, say so clearly. "
+                    "Use **bold** for key terms, bullet lists for multiple points, "
+                    "code blocks for code. "
+                    "Do NOT mention filenames or page numbers. Be direct and concise."
+                )
+        
         async def generate():
             try:
                 resp = groq_client.chat.completions.create(
