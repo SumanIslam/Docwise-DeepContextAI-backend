@@ -31,6 +31,11 @@ if os.name == "nt":
 
 load_dotenv()
 groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+# Groq rotates/decommissions models periodically. Keep the ID in ONE place and
+# allow overriding via env so a retired model can be swapped without code edits.
+# List models your key can use:
+#   curl https://api.groq.com/openai/v1/models -H "Authorization: Bearer $GROQ_API_KEY"
+GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
 
 app = FastAPI()
 app.add_middleware(
@@ -359,10 +364,11 @@ def extract_pages(path: str) -> list[dict]:
 # TEXT UTILITIES
 # ══════════════════════════════════════════════════════════════════════════════
 def chunk_text(text: str, chunk_size: int = 700, overlap: int = 120) -> list:
+    step = max(1, chunk_size - overlap)   # guard: overlap >= chunk_size would loop forever
     chunks, start = [], 0
     while start < len(text):
         chunks.append(text[start:start + chunk_size])
-        start += chunk_size - overlap
+        start += step
     return chunks
 
 def tokenize(text: str) -> list:
@@ -394,14 +400,14 @@ def init_db():
         );
     """)
     try: c.execute("ALTER TABLE chat_docs ADD COLUMN file_size INTEGER DEFAULT 0"); c.commit()
-    except: pass
+    except Exception: pass
     c.commit(); c.close()
 
 init_db()
 
 chat_memory:    dict[str, list] = {}
 chat_summaries: dict[str, str]  = {}
-WINDOW = 6; SUMMARY_TRIGGER = 12
+WINDOW = 3; SUMMARY_TRIGGER = 10
 
 def _build_history(cid):
     msgs    = chat_memory.get(cid, [])
@@ -419,7 +425,7 @@ def _maybe_summarise(cid):
     if not to_sum: return
     try:
         resp = groq_client.chat.completions.create(
-            model="llama-3.3-70b-versatile", temperature=0.1, max_tokens=256,
+            model=GROQ_MODEL, temperature=0.1, max_tokens=256,
             messages=[
                 {"role":"system","content":"Summarise the conversation in 3-5 sentences. Return only the summary."},
                 {"role":"user","content":"\n".join(f"{m['role'].upper()}: {m['content']}" for m in to_sum)},
@@ -427,9 +433,9 @@ def _maybe_summarise(cid):
         )
         chat_summaries[cid] = resp.choices[0].message.content.strip()
         chat_memory[cid]    = msgs[-(WINDOW*2):]
-    except: pass
+    except Exception: pass
 
-def now(): return datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+def now(): return datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # HYBRID SEARCH
@@ -469,6 +475,11 @@ def rerank(query: str, candidates: list, top_n: int = 5) -> list:
 # ══════════════════════════════════════════════════════════════════════════════
 RERANK_THRESHOLD = -2.5
 
+# Max characters of each retrieved chunk sent to the LLM as context.
+# Stored chunks are ~700 chars; trimming here keeps prompts within the
+# 100k tokens/day Groq budget without dropping whole chunks.
+CONTEXT_CHARS = 600
+
 def aggregate_sources(chunks: list) -> list:
     by_doc: dict = {}
     for chunk in chunks:
@@ -483,8 +494,8 @@ def aggregate_sources(chunks: list) -> list:
         if score > by_doc[doc_id]["best_score"]: by_doc[doc_id]["best_score"] = score
     valid = [d for d in by_doc.values() if d["best_score"] > RERANK_THRESHOLD and d["pages"]]
     if not valid: return []
-    best = sorted(valid, key=lambda d: d["best_score"], reverse=True)[:1]
-    return [{"doc_id":d["doc_id"],"filename":d["filename"],"pages":sorted(d["pages"])} for d in best]
+    ranked = sorted(valid, key=lambda d: d["best_score"], reverse=True)
+    return [{"doc_id":d["doc_id"],"filename":d["filename"],"pages":sorted(d["pages"])} for d in ranked]
 
 # ══════════════════════════════════════════════════════════════════════════════
 # OVERVIEW / SUMMARY QUERY DETECTION
@@ -507,31 +518,51 @@ def is_overview_query(q: str) -> bool:
     return bool(OVERVIEW_RE.search(q))
 
 def _fetch_overview_chunks(cid: str, doc_ids: list) -> list:
-    pool = hybrid_search(
-        "document overview summary main topics key points", cid, doc_ids, top_k=60
-    )
+    """
+    For summary/overview: fetch chunks spread across the ENTIRE document.
+    Strategy: get ALL chunks for the selected docs, group by page,
+    then sample evenly to cover every part of the document.
+    """
+    # Get every chunk stored for these docs (no similarity filter)
+    qv   = embed_model.encode("content summary overview").tolist()
+    pool = qdrant.query_points(
+        "rag_docs", query=qv, limit=200,
+        query_filter=Filter(must=[
+            FieldCondition(key="chat_id", match=MatchValue(value=cid)),
+            FieldCondition(key="doc_id",  match=MatchAny(any=doc_ids)),
+        ]),
+    ).points
+
     if not pool:
-        qv   = embed_model.encode("content").tolist()
-        pool = qdrant.query_points(
-            "rag_docs", query=qv, limit=60,
-            query_filter=Filter(must=[
-                FieldCondition(key="chat_id", match=MatchValue(value=cid)),
-                FieldCondition(key="doc_id",  match=MatchAny(any=doc_ids)),
-            ]),
-        ).points
-    if not pool: return []
+        return []
+
+    # Group by page — keep best chunk per page
     by_page: dict[int, object] = {}
     for h in pool:
         pg = h.payload.get("page", 0)
-        if pg not in by_page: by_page[pg] = h
+        if pg not in by_page:
+            by_page[pg] = h
+
     pages_sorted = sorted(by_page.keys())
-    n_buckets    = min(15, len(pages_sorted))
-    selected     = []
-    if n_buckets > 0:
-        step = max(1, len(pages_sorted) // n_buckets)
-        for i in range(0, len(pages_sorted), step):
-            selected.append(by_page[pages_sorted[i]])
-            if len(selected) >= n_buckets: break
+    total_pages  = len(pages_sorted)
+
+    if total_pages == 0:
+        return []
+
+    # For short docs: take all pages
+    if total_pages <= 12:
+        return [by_page[pg] for pg in pages_sorted]
+
+    # For longer docs: spread-sample up to 12 pages evenly
+    n_samples = 12
+    step      = total_pages / n_samples
+    selected  = []
+    for i in range(n_samples):
+        idx = min(int(i * step), total_pages - 1)
+        pg  = pages_sorted[idx]
+        if by_page[pg] not in selected:
+            selected.append(by_page[pg])
+
     return selected
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -568,9 +599,9 @@ def delete_chat(cid: str):
     c = db(); docs = c.execute("SELECT * FROM chat_docs WHERE chat_id=?",(cid,)).fetchall()
     for d in docs:
         try: qdrant.delete("rag_docs",points_selector=FilterSelector(filter=Filter(must=[FieldCondition(key="doc_id",match=MatchValue(value=d["id"]))])))
-        except: pass
+        except Exception: pass
         try: os.remove(f"uploads/{d['id']}_{d['filename']}")
-        except: pass
+        except Exception: pass
     c.execute("DELETE FROM messages WHERE chat_id=?", (cid,))
     c.execute("DELETE FROM chat_docs WHERE chat_id=?", (cid,))
     c.execute("DELETE FROM chats WHERE id=?", (cid,))
@@ -596,9 +627,9 @@ def get_documents(cid: str):
     for r in rows:
         row = dict(r)
         try: row["file_size"] = int(row["file_size"] or 0)
-        except: row["file_size"] = 0
+        except Exception: row["file_size"] = 0
         try: row["pages"] = int(row["pages"] or 0)
-        except: row["pages"] = 0
+        except Exception: row["pages"] = 0
         ca = str(row.get("created_at") or "")
         if ca and "T" not in ca: row["created_at"] = ca.replace(" ","T")+"Z"
         elif ca and not ca.endswith("Z") and "+" not in ca: row["created_at"] = ca+"Z"
@@ -615,7 +646,8 @@ async def upload_pdf(cid: str, file: UploadFile = File(...)):
         c = db()
         if not c.execute("SELECT id FROM chats WHERE id=?", (cid,)).fetchone():
             raise HTTPException(404, "Chat not found")
-        filename = file.filename or ""
+        # Strip any directory components a client may send (path-traversal guard).
+        filename = os.path.basename((file.filename or "").replace("\\", "/")).strip()
         if not filename.lower().endswith(".pdf"):
             raise HTTPException(400, "Only PDF files are allowed")
 
@@ -647,7 +679,7 @@ async def upload_pdf(cid: str, file: UploadFile = File(...)):
         c.close()
 
         # Return immediately to frontend — processing continues in background
-        asyncio.get_event_loop().run_in_executor(
+        asyncio.get_running_loop().run_in_executor(
             _upload_executor,
             _process_pdf_background,
             path, doc_id, cid, filename,
@@ -721,20 +753,58 @@ def rename_document(cid: str, did: str, body: RenameBody):
 def delete_document(cid: str, did: str):
     c = db(); row = c.execute("SELECT filename FROM chat_docs WHERE id=? AND chat_id=?",(did,cid)).fetchone()
     try: qdrant.delete("rag_docs",points_selector=FilterSelector(filter=Filter(must=[FieldCondition(key="doc_id",match=MatchValue(value=did))])))
-    except: pass
+    except Exception: pass
     if row:
         try: os.remove(f"uploads/{did}_{row['filename']}")
-        except: pass
+        except Exception: pass
     c.execute("DELETE FROM chat_docs WHERE id=? AND chat_id=?",(did,cid)); c.commit(); c.close()
     return {"status":"deleted"}
+
+# Detect response language for the LLM answer.
+def _detect_response_lang(context: str, query: str) -> str:
+    """Decide the answer language.
+
+    Project rule: the QUERY language takes priority over the document
+    language. If the user asks in Bangla -> answer in Bangla; if they ask in
+    English -> answer in English, even when the document is in the other
+    language. We only fall back to the document language when the query
+    itself carries no clear language signal (e.g. it is just numbers,
+    punctuation, or a very short fragment).
+    """
+    bn_in_query    = sum(1 for ch in query if '\u0980' <= ch <= '\u09ff')
+    latin_in_query = sum(1 for ch in query if 'a' <= ch.lower() <= 'z')
+
+    # Clear signal in the query wins.
+    if bn_in_query >= 2:
+        return "bangla"
+    if latin_in_query >= 3:
+        return "english"
+
+    # Query is ambiguous -> follow the document language.
+    bn_in_context = sum(1 for ch in context if '\u0980' <= ch <= '\u09ff')
+    return "bangla" if bn_in_context > 30 else "english"
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # SEARCH + STREAM
 # ══════════════════════════════════════════════════════════════════════════════
+def _sse_message(payload: dict) -> EventSourceResponse:
+    """Return a single-event SSE stream.
+
+    The frontend consumes /search-stream purely as an SSE byte stream
+    (res.body.getReader() + parsing `data:` lines), so error/empty replies
+    must also be streamed — a plain JSON dict is silently dropped by the
+    client. Keep every response on this endpoint an EventSourceResponse.
+    """
+    async def _gen():
+        yield {"data": json.dumps(payload)}
+    return EventSourceResponse(_gen())
+
+
 @app.post("/chats/{cid}/search-stream")
 async def search_stream(cid: str, req: SearchRequest):
     try:
-        if not req.doc_ids: return {"error":"No documents selected"}
+        if not req.doc_ids: return _sse_message({"error": "No documents selected"})
         if cid not in chat_memory: chat_memory[cid] = []
         overview   = is_overview_query(req.query)
         if overview:
@@ -750,41 +820,58 @@ async def search_stream(cid: str, req: SearchRequest):
             async def empty2():
                 yield {"data":json.dumps({"text":"আমি নির্বাচিত ডকুমেন্টে প্রাসঙ্গিক তথ্য খুঁজে পাইনি। / I could not find relevant information in the selected documents."})}
             return EventSourceResponse(empty2())
-        context = "".join(f"[Page {c.payload['page']}]\n{c.payload['text']}\n\n" for c in top_chunks)
+        context = "".join(f"[Page {c.payload['page']}]\n{c.payload['text'][:CONTEXT_CHARS]}\n\n" for c in top_chunks)
+        resp_lang = _detect_response_lang(context, req.query)
         sources  = [] if overview else aggregate_sources(top_chunks)
         history  = _build_history(cid)
         if overview:
-            system_prompt = (
-                "You are a document assistant. The document is written in Bengali (Bangla). "
-                "Produce a comprehensive overview using ONLY the provided context. "
-                "Respond in Bengali (Bangla). "
-                "Structure your response:\n"
-                "- One sentence describing what the document is about\n"
-                "- ## headings for major sections or topics found in the document\n"
-                "- Bullet points for specific facts, articles, or provisions\n"
-                "- **Bold** for important terms\n"
-                "- A 'মূল বিষয়সমূহ' (Key Takeaways) section at the end\n"
-                "Do NOT make up content. Only use what is in the context. "
-                "Do NOT mention page numbers or filenames."
-            )
+            if resp_lang == "bangla":
+                system_prompt = (
+                    "You are a document assistant. "
+                    "Produce a comprehensive overview using ONLY the provided context. "
+                    "Respond in Bengali (Bangla). "
+                    "Structure: one sentence about the document, ## headings for major topics, "
+                    "bullet points for key facts, **bold** for important terms, "
+                    "end with 'মূল বিষয়সমূহ' section. "
+                    "Do NOT mention page numbers or filenames."
+                )
+            else:
+                system_prompt = (
+                    "You are a document assistant. "
+                    "Produce a comprehensive overview using ONLY the provided context. "
+                    "Respond in English. "
+                    "Structure: one sentence about the document, ## headings for major topics, "
+                    "bullet points for key facts, **bold** for important terms, "
+                    "end with 'Key Takeaways' section. "
+                    "Do NOT mention page numbers or filenames."
+                )
         else:
-            system_prompt = (
-                "You are a precise document assistant. "
-                "The document is written in Bengali (Bangla). "
-                "Answer in the same language as the question: "
-                "Bangla question → Bangla answer, English question → English answer. "
-                "Answer ONLY from the provided context. "
-                "If the answer is not in the context, say so clearly. "
-                "Use **bold** for key terms, bullet lists for multiple points, "
-                "code blocks for code. "
-                "Do NOT mention filenames or page numbers. Be direct and concise."
-            )
+            if resp_lang == "bangla":
+                system_prompt = (
+                    "You are a precise document assistant. "
+                    "Answer ONLY from the provided context. "
+                    "Respond in Bengali (Bangla). "
+                    "If the answer is not in the context, say so in Bengali. "
+                    "Use **bold** for key terms, bullet lists for multiple points. "
+                    "Do NOT mention filenames or page numbers."
+                )
+            else:
+                system_prompt = (
+                    "You are a precise document assistant. "
+                    "Answer ONLY from the provided context. "
+                    "Respond in English. "
+                    "If the answer is not in the context, say so clearly. "
+                    "Use **bold** for key terms, bullet lists for multiple points, "
+                    "code blocks for code. "
+                    "Do NOT mention filenames or page numbers. Be direct and concise."
+                )
+        
         async def generate():
             try:
                 resp = groq_client.chat.completions.create(
-                    model="llama-3.3-70b-versatile",
+                    model=GROQ_MODEL,
                     temperature=0.2,
-                    max_tokens=2048 if overview else 1024,
+                    max_tokens=1536 if overview else 768,
                     stream=True,
                     messages=[
                         {"role":"system","content":system_prompt},
@@ -794,6 +881,8 @@ async def search_stream(cid: str, req: SearchRequest):
                 )
                 full = ""
                 for chunk in resp:
+                    if not chunk.choices:
+                        continue
                     t = chunk.choices[0].delta.content
                     if t: full+=t; yield {"data":json.dumps({"text":t})}
                 c = db()
@@ -802,10 +891,11 @@ async def search_stream(cid: str, req: SearchRequest):
                 c.commit(); c.close()
                 chat_memory[cid].append({"role":"user","content":req.query})
                 chat_memory[cid].append({"role":"assistant","content":full})
-                _maybe_summarise(cid)
+                # Summarise off the event loop — the summary call is blocking.
+                asyncio.get_running_loop().run_in_executor(None, _maybe_summarise, cid)
                 yield {"data":json.dumps({"sources":sources,"done":True})}
             except Exception as e:
                 yield {"data":json.dumps({"error":str(e)})}
         return EventSourceResponse(generate())
     except Exception as e:
-        return {"error":str(e)}
+        return _sse_message({"error": str(e)})
