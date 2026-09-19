@@ -4,3 +4,4 @@ uploads/
 .env
 *.pyc
 qdrant_data/
+docwise.db

@@ -260,32 +260,42 @@ def _classify_pdf(path: str) -> str:
     except Exception as e:
         print(f"[classify] PyMuPDF check failed: {e}")
 
-    # Bijoy checks (fallback)
+    # ── Bijoy (ANSI / SutonnyMJ) detection — RATIO based, not absolute counts ───
+    # By this point the PDF has NO meaningful Unicode Bangla and is not image
+    # heavy. A Bijoy/SutonnyMJ PDF stores Bengali as high-ANSI glyph bytes, so
+    # pypdf yields Latin gibberish: a LARGE FRACTION of chars land in
+    # 128..0x097F and there are almost no real English words. A genuine English
+    # PDF contains only a few such chars (©, é, curly quotes, em-dashes — a tiny
+    # fraction) and is full of common English words. The OLD code used absolute
+    # counts (high_ansi >= 3, symbols >= 2), which fire on ordinary English
+    # typography and mislabel long English PDFs as Bijoy. We now require BOTH a
+    # high ANSI *ratio* AND the absence of English before using the (slow,
+    # lossy) Bijoy OCR path.
     if total > 0:
-        high_ansi = sum(1 for ch in all_text if 128 <= ord(ch) <= 0x097F)
-        if high_ansi >= 3:
-            return "bijoy"
-
-        bijoy_symbols = sum(1 for ch in all_text if ch in '©®°±²³´µ¶·¸¹º»¼½¾¿†‡ˆ‰Š‹ŒŽ''""•–—˜™š›œžŸ¡¢£¤¥¦§¨')
-        if bijoy_symbols >= 2:
-            return "bijoy"
-
-        spaced_chars = len(re.findall(r'(?<!\w)\w \w \w(?!\w)', all_text))
-        if spaced_chars >= 2:
-            return "bijoy"
+        high_ansi  = sum(1 for ch in all_text if 128 <= ord(ch) <= 0x097F)
+        ansi_ratio = high_ansi / total
 
         words = [w for w in all_text.split() if w.isalpha() and w.isascii()]
-        if words:
-            avg_len = sum(len(w) for w in words) / len(words)
-            english_common = {
-                'the','and','is','in','of','to','a','that','it','was',
-                'for','on','are','as','with','his','they','at','be','this',
-                'from','or','an','but','not','what','all','were','when','we',
-            }
-            eng_hits = len(set(w.lower() for w in words) & english_common)
-            if avg_len < 3.5 and eng_hits < 5:
+        english_common = {
+            'the','and','is','in','of','to','a','that','it','was',
+            'for','on','are','as','with','his','they','at','be','this',
+            'from','or','an','but','not','what','all','were','when','we',
+        }
+        eng_hits = len(set(w.lower() for w in words) & english_common) if words else 0
+        avg_len  = (sum(len(w) for w in words) / len(words)) if words else 0.0
+
+        # Real English prose matches many common function words. If it does, the
+        # document is NEVER Bijoy — fall through to the english/return path.
+        looks_english = eng_hits >= 5
+
+        if not looks_english:
+            # Documented primary signal: text dominated by high-ANSI glyph bytes.
+            if ansi_ratio > 0.15:
                 return "bijoy"
-            if len(words) > 20 and eng_hits < 3:
+            # Secondary: glyph dumps have unnaturally short "words" and no English.
+            if ansi_ratio > 0.05 and avg_len and avg_len < 3.5:
+                return "bijoy"
+            if ansi_ratio > 0.05 and len(words) > 20 and eng_hits < 3:
                 return "bijoy"
 
     if total < 100:
@@ -407,6 +417,11 @@ init_db()
 
 chat_memory:    dict[str, list] = {}
 chat_summaries: dict[str, str]  = {}
+# Per-document background-processing state, so the frontend can show a loading
+# indicator and block questions until chunking + embedding has finished.
+# Values: "processing" | "ready" | "failed". A missing id is treated as "ready"
+# (e.g. documents processed in a previous server run).
+doc_status:     dict[str, str]  = {}
 WINDOW = 3; SUMMARY_TRIGGER = 10
 
 def _build_history(cid):
@@ -440,40 +455,76 @@ def now(): return datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%
 # ══════════════════════════════════════════════════════════════════════════════
 # HYBRID SEARCH
 # ══════════════════════════════════════════════════════════════════════════════
-def hybrid_search(query: str, cid: str, doc_ids: list, top_k: int = 20) -> list:
-    qv   = embed_model.encode(query).tolist()
-    hits = qdrant.query_points(
-        "rag_docs", query=qv, limit=top_k,
-        query_filter=Filter(must=[
-            FieldCondition(key="chat_id", match=MatchValue(value=cid)),
-            FieldCondition(key="doc_id",  match=MatchAny(any=doc_ids)),
-        ]),
+def hybrid_search(query: str, cid: str, doc_ids: list, top_k: int = 40) -> list:
+    """Dense (Qdrant) + lexical (BM25) retrieval fused with Reciprocal Rank Fusion.
+
+    IMPORTANT: BM25 runs over a BROAD candidate pool, NOT just the dense top-k.
+    The previous version built BM25 only from the dense hits, so any chunk the
+    (English-only) embedding model buried could never be recovered lexically —
+    which is exactly why exact/structural queries ("Part I", "১ম অধ্যায়") and
+    Bengali queries failed. Pulling a wide pool lets BM25 rescue exact-term and
+    Bengali matches even when dense similarity is weak. For typical documents
+    (<= 200 chunks) the pool is effectively the whole document.
+    """
+    qv  = embed_model.encode(query).tolist()
+    flt = Filter(must=[
+        FieldCondition(key="chat_id", match=MatchValue(value=cid)),
+        FieldCondition(key="doc_id",  match=MatchAny(any=doc_ids)),
+    ])
+
+    pool = qdrant.query_points(
+        "rag_docs", query=qv, limit=max(top_k, 200), query_filter=flt,
     ).points
-    hits = [h for h in hits if h.score > 0.15]
-    if not hits: return []
-    corpus  = [h.payload["text"] for h in hits]
+    if not pool:
+        return []
+
+    # Dense channel: keep vector order, drop only clearly-irrelevant hits. The
+    # floor is LOW (0.02, was 0.15) because Bengali dense scores are small even
+    # when relevant, and the old floor silently discarded valid hits.
+    dense = [h for h in pool if h.score > 0.02]
+
+    # Lexical channel: BM25 over the ENTIRE pool, independent of dense score.
+    corpus  = [h.payload["text"] for h in pool]
     bm25    = BM25Okapi([tokenize(t) for t in corpus])
     bm25_sc = bm25.get_scores(tokenize(query))
-    RRF_K   = 60
-    d_rank  = {h.id: r+1 for r,h in enumerate(hits)}
-    b_order = sorted(range(len(hits)), key=lambda i: bm25_sc[i], reverse=True)
-    b_rank  = {hits[i].id: r+1 for r,i in enumerate(b_order)}
-    rrf     = {h.id: 1/(RRF_K+d_rank[h.id]) + 1/(RRF_K+b_rank[h.id]) for h in hits}
-    return sorted(hits, key=lambda h: rrf[h.id], reverse=True)
+
+    RRF_K  = 60
+    d_rank = {h.id: r + 1 for r, h in enumerate(dense)}
+    b_order = sorted(range(len(pool)), key=lambda i: bm25_sc[i], reverse=True)
+    b_rank  = {pool[i].id: r + 1 for r, i in enumerate(b_order) if bm25_sc[i] > 0}
+
+    def _rrf(h):
+        s = 0.0
+        if h.id in d_rank: s += 1.0 / (RRF_K + d_rank[h.id])
+        if h.id in b_rank: s += 1.0 / (RRF_K + b_rank[h.id])
+        return s
+
+    # Keep only chunks that scored in at least one channel, best top_k by RRF.
+    scored = [h for h in pool if h.id in d_rank or h.id in b_rank]
+    if not scored:
+        return []
+    return sorted(scored, key=_rrf, reverse=True)[:top_k]
 
 def rerank(query: str, candidates: list, top_n: int = 5) -> list:
     if not candidates: return []
     pairs  = [(query, c.payload["text"][:512]) for c in candidates]
     scores = reranker.predict(pairs)
     ranked = sorted(zip(scores, candidates), key=lambda x: x[0], reverse=True)
-    top    = [(s,c) for s,c in ranked if s > -4][:top_n]
+    # Keep floor is lenient (-6, was -4): the English cross-encoder scores
+    # Bengali query/passage pairs much lower than English ones, so a strict
+    # floor drops valid Bengali matches. top_n still caps context size.
+    top    = [(s,c) for s,c in ranked if s > -6][:top_n]
     for s,c in top: c.payload["rerank_score"] = float(s)
     return [c for _,c in top]
 
 # ══════════════════════════════════════════════════════════════════════════════
 # SOURCE AGGREGATION
 # ══════════════════════════════════════════════════════════════════════════════
-RERANK_THRESHOLD = -2.5
+# Minimum rerank score for a document to be cited as a source. Lenient (-4.0,
+# was -2.5) for the same reason as the rerank keep-floor: the English
+# cross-encoder under-scores Bengali pairs, so a strict threshold hid valid
+# Bengali citations.
+RERANK_THRESHOLD = -4.0
 
 # Max characters of each retrieved chunk sent to the LLM as context.
 # Stored chunks are ~700 chars; trimming here keeps prompts within the
@@ -633,6 +684,9 @@ def get_documents(cid: str):
         ca = str(row.get("created_at") or "")
         if ca and "T" not in ca: row["created_at"] = ca.replace(" ","T")+"Z"
         elif ca and not ca.endswith("Z") and "+" not in ca: row["created_at"] = ca+"Z"
+        # Background-processing state for the upload loading indicator. Unknown
+        # ids (processed in a previous run) are treated as ready.
+        row["status"] = doc_status.get(row["id"], "ready")
         result.append(row)
     return result
 
@@ -678,6 +732,10 @@ async def upload_pdf(cid: str, file: UploadFile = File(...)):
         c.commit()
         c.close()
 
+        # Mark as processing BEFORE scheduling the background job, so any
+        # get_documents call in the gap reports the correct state.
+        doc_status[doc_id] = "processing"
+
         # Return immediately to frontend — processing continues in background
         asyncio.get_running_loop().run_in_executor(
             _upload_executor,
@@ -689,10 +747,11 @@ async def upload_pdf(cid: str, file: UploadFile = File(...)):
             "doc_id": doc_id,
             "filename": filename,
             "display_name": dn,
-            "pages": 0,          # will update after processing
+            "pages": 0,            # will update after processing
             "file_size": file_size,
             "created_at": ts,
-            "processing": True,  # tells frontend it's still processing
+            "processing": True,    # legacy flag (kept for compatibility)
+            "status": "processing",
         }
 
     except HTTPException:
@@ -707,26 +766,45 @@ def _process_pdf_background(path: str, doc_id: str, cid: str, filename: str):
         pages = extract_pages(path)
         if not pages:
             print(f"[upload] No text extracted from {filename}")
+            doc_status[doc_id] = "failed"
             return
 
-        points = []
+        # Collect ALL chunks first, then embed them in ONE batched call.
+        # Encoding one chunk at a time was the main upload bottleneck on large
+        # (e.g. 72-page) PDFs; batching is typically 5-20x faster because the
+        # model processes many texts per forward pass.
+        chunk_texts: list[str] = []
+        chunk_pages: list[int] = []
         for item in pages:
             for chunk in chunk_text(item["text"]):
                 if len(chunk.strip()) < 10:
                     continue
-                points.append(PointStruct(
-                    id=str(uuid.uuid4()),
-                    vector=embed_model.encode(chunk[:4000]).tolist(),
-                    payload={
-                        "chat_id": cid, "doc_id": doc_id,
-                        "text": chunk, "page": item["page"],
-                        "filename": filename,
-                    },
-                ))
+                chunk_texts.append(chunk[:4000])
+                chunk_pages.append(item["page"])
 
-        if not points:
+        if not chunk_texts:
             print(f"[upload] No chunks generated from {filename}")
+            doc_status[doc_id] = "failed"
             return
+
+        vectors = embed_model.encode(
+            chunk_texts,
+            batch_size=64,
+            show_progress_bar=False,
+        )
+
+        points = [
+            PointStruct(
+                id=str(uuid.uuid4()),
+                vector=vectors[i].tolist(),
+                payload={
+                    "chat_id": cid, "doc_id": doc_id,
+                    "text": chunk_texts[i], "page": chunk_pages[i],
+                    "filename": filename,
+                },
+            )
+            for i in range(len(chunk_texts))
+        ]
 
         for i in range(0, len(points), 100):
             qdrant.upsert("rag_docs", points=points[i:i + 100])
@@ -739,9 +817,11 @@ def _process_pdf_background(path: str, doc_id: str, cid: str, filename: str):
         )
         c.commit()
         c.close()
+        doc_status[doc_id] = "ready"
         print(f"[upload] Done: {filename} — {len(pages)} pages, {len(points)} chunks")
 
     except Exception as e:
+        doc_status[doc_id] = "failed"
         print(f"[upload] Background processing error for {filename}: {e}")
 
 @app.put("/chats/{cid}/documents/{did}")
@@ -810,7 +890,7 @@ async def search_stream(cid: str, req: SearchRequest):
         if overview:
             top_chunks = _fetch_overview_chunks(cid, req.doc_ids)
         else:
-            candidates = hybrid_search(req.query, cid, req.doc_ids, top_k=20)
+            candidates = hybrid_search(req.query, cid, req.doc_ids, top_k=40)
             if not candidates:
                 async def empty():
                     yield {"data":json.dumps({"text":"আমি নির্বাচিত ডকুমেন্টে প্রাসঙ্গিক তথ্য খুঁজে পাইনি। / I could not find relevant information in the selected documents."})}
