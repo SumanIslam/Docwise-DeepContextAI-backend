@@ -65,6 +65,8 @@ FUNCS_FROM_MAIN = [
     "_ocr_embedded_images", "_classify_pdf", "_broken_bangla_score",
     "extract_pages", "chunk_text",
 ]
+# module-level constants those functions rely on (compiled patterns etc.)
+NAMES_FROM_MAIN = ["_BROKEN_BANGLA_RE"]
 EMBED_MODELS = {
     "A_baseline": "all-MiniLM-L6-v2",
     "B_multilingual": "paraphrase-multilingual-MiniLM-L12-v2",
@@ -115,11 +117,16 @@ def load_pipeline(main_path, tesseract_cmd):
 
     src = open(main_path, encoding="utf-8").read()
     tree = ast.parse(src)
-    wanted = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name in FUNCS_FROM_MAIN]
-    found = {n.name for n in wanted}
+    consts = [n for n in tree.body if isinstance(n, ast.Assign)
+              and any(isinstance(t, ast.Name) and t.id in NAMES_FROM_MAIN for t in n.targets)]
+    funcs = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name in FUNCS_FROM_MAIN]
+    wanted = consts + funcs                      # constants must be defined first
+    found = {n.name for n in funcs}
     missing = [n for n in FUNCS_FROM_MAIN if n not in found]
     if missing:
         sys.exit(f"[freeze] ABORT: functions not found in main.py: {missing}")
+    if len(consts) != len(NAMES_FROM_MAIN):
+        sys.exit(f"[freeze] ABORT: constants not found in main.py: {NAMES_FROM_MAIN}")
 
     import regex
     namespace = {

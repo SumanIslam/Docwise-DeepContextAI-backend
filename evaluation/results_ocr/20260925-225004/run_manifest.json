@@ -1,0 +1,36 @@
+{
+  "run_id": "20260925-225004",
+  "experiment": "C — broken Bengali text layer vs OCR fallback",
+  "created_utc": "2026-09-25T16:50:55+00:00",
+  "pipeline": "deployed configuration: dense-only retrieval, no BM25, no reranker",
+  "embedding_config": {
+    "model": "intfloat/multilingual-e5-small",
+    "max_seq_length": null,
+    "collection": "docwise_eval_D_e5_small",
+    "role": "supplementary",
+    "query_prefix": "query: ",
+    "passage_prefix": "passage: "
+  },
+  "affected_documents": [
+    "U1",
+    "U2"
+  ],
+  "control_chunks_identical": true,
+  "inputs_sha256": {
+    "chunks_before": "f7d768cb91a7fd35428d9347d1a0c7207c75d79674d88c9fa7064b1a5a0349ad",
+    "chunks_after": "3b0f82fd68a8aac1c4025d930a28b3e55bf52839a86c189c0029add0015b5d75",
+    "qrels_before": "693600ab126a06194771fa531568e185bbee0292c450ff991fda66a4a4a638b1",
+    "labels_after": "c96cb5e264f107944e6c5f7774b7d18288f60cf97eb7dce26a673e0e707f9e4b",
+    "questions": "dab1cf705b6ce682a2adc760def953806384e0dafc2eb9c8d36ccc6e420da521"
+  },
+  "environment": {
+    "python": "3.14.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "sentence-transformers": "5.5.1",
+    "transformers": "5.9.0",
+    "torch": "2.12.0",
+    "qdrant-client": "1.18.0",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1"
+  }
+}
