@@ -94,7 +94,7 @@ KS = (1, 5, 10)
 STAGES = ["bm25", "dense", "hybrid", "rerank", "production"]
 GROUPS = ["doc_type", "doc_code", "query_language", "question_type", "cross_lingual_direction"]
 BOOTSTRAP, SEED = 10000, 12345
-FUNCS_FROM_MAIN = ["tokenize", "hybrid_search", "rerank"]
+FUNCS_FROM_MAIN = ["tokenize", "_encode_query", "hybrid_search", "rerank"]
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -123,9 +123,14 @@ def load_main_functions(main_path):
     missing = set(FUNCS_FROM_MAIN) - {n.name for n in nodes}
     if missing:
         sys.exit(f"[exp] ABORT: not found in main.py: {sorted(missing)}")
+    # The experiment always uses the ORIGINAL pipeline settings, whatever the
+    # app's .env currently says; prefixes are applied by the embedder wrapper.
     ns = {"__name__": "docwise_main_retrieval", "re": re, "_regex": regex,
           "BM25Okapi": BM25Okapi, "Filter": Filter, "FieldCondition": FieldCondition,
-          "MatchValue": MatchValue, "MatchAny": MatchAny}
+          "MatchValue": MatchValue, "MatchAny": MatchAny,
+          "EMBED_QUERY_PREFIX": "", "EMBED_PASSAGE_PREFIX": "",
+          "USE_BM25": True, "USE_RERANKER": True,
+          "DENSE_WEIGHT": 1.0, "BM25_WEIGHT": 1.0}
     exec(compile(ast.Module(body=nodes, type_ignores=[]), main_path, "exec"), ns)
     if ns["tokenize"]("বাংলাদেশের প্রধান নদী") != ["বাংলাদেশের", "প্রধান", "নদী"]:
         sys.exit("[exp] ABORT: main.py tokenize() still splits Bengali words — apply the BM25 fix first.")

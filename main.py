@@ -60,10 +60,32 @@ EMBED_MAX_SEQ_LENGTH = os.getenv("EMBED_MAX_SEQ_LENGTH", "").strip()   # optiona
 QDRANT_COLLECTION    = os.getenv("QDRANT_COLLECTION", "rag_docs")
 RERANK_MODEL_NAME    = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 
+# Instruction prefixes required by some embedding models (E5 family:
+# "query: " / "passage: "). Empty for models that do not use them.
+EMBED_QUERY_PREFIX   = os.getenv("EMBED_QUERY_PREFIX", "")
+EMBED_PASSAGE_PREFIX = os.getenv("EMBED_PASSAGE_PREFIX", "")
+
+# Retrieval pipeline switches (Experiment E). With a Bengali-capable embedding
+# model, BM25 fusion and the English cross-encoder both HURT retrieval
+# (Recall@5 0.825 dense-only vs 0.360 for the full pipeline), so a deployment
+# using such a model should switch both off. Defaults keep the original
+# behaviour for the original English-only embedding model.
+USE_BM25      = os.getenv("USE_BM25", "1").strip().lower() not in ("0", "false", "no")
+USE_RERANKER  = os.getenv("USE_RERANKER", "1").strip().lower() not in ("0", "false", "no")
+DENSE_WEIGHT  = float(os.getenv("DENSE_WEIGHT", "1.0"))   # RRF channel weights
+BM25_WEIGHT   = float(os.getenv("BM25_WEIGHT", "1.0"))
+
 embed_model = SentenceTransformer(EMBED_MODEL_NAME)
 if EMBED_MAX_SEQ_LENGTH:
     embed_model.max_seq_length = int(EMBED_MAX_SEQ_LENGTH)
-reranker    = CrossEncoder(RERANK_MODEL_NAME, max_length=512)
+# The cross-encoder is ~90 MB and 2+ seconds per query; only load it if used.
+reranker    = CrossEncoder(RERANK_MODEL_NAME, max_length=512) if USE_RERANKER else None
+
+def _encode_query(text: str):
+    return embed_model.encode(EMBED_QUERY_PREFIX + text)
+
+def _encode_passages(texts: list, **kw):
+    return embed_model.encode([EMBED_PASSAGE_PREFIX + t for t in texts], **kw)
 
 def _embedding_dim(model) -> int:
     fn = getattr(model, "get_embedding_dimension", None) or model.get_sentence_embedding_dimension
@@ -72,6 +94,9 @@ def _embedding_dim(model) -> int:
 EMBED_DIM = _embedding_dim(embed_model)
 print(f"[config] embed_model={EMBED_MODEL_NAME} dim={EMBED_DIM} "
       f"max_seq_length={embed_model.max_seq_length} collection={QDRANT_COLLECTION}")
+print(f"[config] prefixes={EMBED_QUERY_PREFIX!r}/{EMBED_PASSAGE_PREFIX!r} "
+      f"bm25={'on' if USE_BM25 else 'off'} reranker={'on' if USE_RERANKER else 'off'} "
+      f"weights dense={DENSE_WEIGHT} bm25={BM25_WEIGHT}")
 
 qdrant = QdrantClient(path="./qdrant_data")
 if QDRANT_COLLECTION not in [c.name for c in qdrant.get_collections().collections]:
@@ -521,7 +546,7 @@ def hybrid_search(query: str, cid: str, doc_ids: list, top_k: int = 40) -> list:
     Bengali matches even when dense similarity is weak. For typical documents
     (<= 200 chunks) the pool is effectively the whole document.
     """
-    qv  = embed_model.encode(query).tolist()
+    qv  = _encode_query(query).tolist()
     flt = Filter(must=[
         FieldCondition(key="chat_id", match=MatchValue(value=cid)),
         FieldCondition(key="doc_id",  match=MatchAny(any=doc_ids)),
@@ -538,6 +563,11 @@ def hybrid_search(query: str, cid: str, doc_ids: list, top_k: int = 40) -> list:
     # when relevant, and the old floor silently discarded valid hits.
     dense = [h for h in pool if h.score > 0.02]
 
+    # With a Bengali-capable embedding model the lexical channel only drags the
+    # ranking down (Experiment E), so it can be switched off entirely.
+    if not USE_BM25:
+        return dense[:top_k]
+
     # Lexical channel: BM25 over the ENTIRE pool, independent of dense score.
     corpus  = [h.payload["text"] for h in pool]
     bm25    = BM25Okapi([tokenize(t) for t in corpus])
@@ -550,8 +580,8 @@ def hybrid_search(query: str, cid: str, doc_ids: list, top_k: int = 40) -> list:
 
     def _rrf(h):
         s = 0.0
-        if h.id in d_rank: s += 1.0 / (RRF_K + d_rank[h.id])
-        if h.id in b_rank: s += 1.0 / (RRF_K + b_rank[h.id])
+        if h.id in d_rank: s += DENSE_WEIGHT / (RRF_K + d_rank[h.id])
+        if h.id in b_rank: s += BM25_WEIGHT  / (RRF_K + b_rank[h.id])
         return s
 
     # Keep only chunks that scored in at least one channel, best top_k by RRF.
@@ -562,6 +592,13 @@ def hybrid_search(query: str, cid: str, doc_ids: list, top_k: int = 40) -> list:
 
 def rerank(query: str, candidates: list, top_n: int = 5) -> list:
     if not candidates: return []
+    if not USE_RERANKER:
+        # The English cross-encoder pushes Bengali passages down (Experiment E:
+        # Recall@5 on scanned Bengali 1.00 before reranking, 0.12 after), so it
+        # can be skipped; the retrieval order is then the final order.
+        top = candidates[:top_n]
+        for c in top: c.payload["rerank_score"] = float(c.score)
+        return top
     pairs  = [(query, c.payload["text"][:512]) for c in candidates]
     scores = reranker.predict(pairs)
     ranked = sorted(zip(scores, candidates), key=lambda x: x[0], reverse=True)
@@ -630,7 +667,7 @@ def _fetch_overview_chunks(cid: str, doc_ids: list) -> list:
     then sample evenly to cover every part of the document.
     """
     # Get every chunk stored for these docs (no similarity filter)
-    qv   = embed_model.encode("content summary overview").tolist()
+    qv   = _encode_query("content summary overview").tolist()
     pool = qdrant.query_points(
         QDRANT_COLLECTION, query=qv, limit=200,
         query_filter=Filter(must=[
@@ -842,7 +879,7 @@ def _process_pdf_background(path: str, doc_id: str, cid: str, filename: str):
             doc_status[doc_id] = "failed"
             return
 
-        vectors = embed_model.encode(
+        vectors = _encode_passages(
             chunk_texts,
             batch_size=64,
             show_progress_bar=False,
@@ -856,6 +893,7 @@ def _process_pdf_background(path: str, doc_id: str, cid: str, filename: str):
                     "chat_id": cid, "doc_id": doc_id,
                     "text": chunk_texts[i], "page": chunk_pages[i],
                     "filename": filename, "embed_model": EMBED_MODEL_NAME,
+                    "passage_prefix": EMBED_PASSAGE_PREFIX,
                 },
             )
             for i in range(len(chunk_texts))
