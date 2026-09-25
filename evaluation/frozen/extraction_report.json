@@ -1,0 +1,165 @@
+{
+  "created_utc": "2026-09-19T02:58:50+00:00",
+  "purpose": "Frozen chunk set for the Docwise embedding-model comparison (A vs B).",
+  "pipeline": {
+    "main_py_sha256": "cb0721acf57dc24c2ab2fb8b8f6568032795500339fbbaccec60d9578bcf4ec7",
+    "functions_used_from_main_py": [
+      "_is_unicode_bangla",
+      "_is_garbled",
+      "_fix_unicode",
+      "_ocr_page_image",
+      "_ocr_embedded_images",
+      "_classify_pdf",
+      "extract_pages",
+      "chunk_text"
+    ],
+    "chunk_size": 700,
+    "chunk_overlap": 120,
+    "min_chunk_chars": 10,
+    "max_chunk_chars": 4000
+  },
+  "environment": {
+    "python": "3.14.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pypdf": "6.12.1",
+    "PyMuPDF": "1.27.2.3",
+    "pytesseract": "0.3.13",
+    "Pillow": "12.2.0",
+    "ftfy": "6.3.1",
+    "sentence-transformers": "5.5.1",
+    "transformers": "5.9.0",
+    "torch": "2.12.0",
+    "qdrant-client": "1.18.0",
+    "rank-bm25": "0.2.2",
+    "tesseract_version": "5.5.0.20241111",
+    "tesseract_cmd": "C:\\Program Files\\Tesseract-OCR\\tesseract.exe",
+    "tesseract_languages": [
+      "ben",
+      "eng",
+      "osd"
+    ],
+    "ben_traineddata_path": "C:\\Program Files\\Tesseract-OCR\\tessdata\\ben.traineddata",
+    "ben_traineddata_bytes": 1789439,
+    "ben_traineddata_sha256": "6023b62209ffcc089452781ab963144f7b21cea78f61d1cfb0d98d490249f828"
+  },
+  "documents": {
+    "B1": {
+      "source_file": "1. B1_Bangladesh_Rivers_and_Water_Resources.pdf",
+      "pdf_sha256": "3c62fc21ad0709080cbd631782fef7e01708f1f9a27240583776e90a211fc2d5",
+      "pdf_type_detected": "bijoy",
+      "pdf_type_expected": "bijoy",
+      "type_matches_expected": true,
+      "pages_total": 4,
+      "pages_with_text": 4,
+      "chunks": 14,
+      "extract_seconds": 9.34
+    },
+    "B2": {
+      "source_file": "3. B2_Bangladesh_Liberation_War_and_Independence.pdf",
+      "pdf_sha256": "b7635f1c73d8b6dd02d76289161c1f4f2accf202558b02efa4aa8a7fcfacb906",
+      "pdf_type_detected": "bijoy",
+      "pdf_type_expected": "bijoy",
+      "type_matches_expected": true,
+      "pages_total": 4,
+      "pages_with_text": 4,
+      "chunks": 13,
+      "extract_seconds": 8.09
+    },
+    "U1": {
+      "source_file": "5. U1_Bangladesh_Education_and_Digital_Technology.pdf",
+      "pdf_sha256": "ddc1105c994cdec2d55a39fb10e68138f6128848a25e26f97e7c191470911684",
+      "pdf_type_detected": "unicode_bangla",
+      "pdf_type_expected": "unicode_bangla",
+      "type_matches_expected": true,
+      "pages_total": 4,
+      "pages_with_text": 4,
+      "chunks": 15,
+      "extract_seconds": 0.87
+    },
+    "U2": {
+      "source_file": "7. U2_Bangladesh_Disaster_Management.pdf",
+      "pdf_sha256": "7c336c1df051540ce6352696a192baba7de89c1821943c32af79cccdee77dffb",
+      "pdf_type_detected": "unicode_bangla",
+      "pdf_type_expected": "unicode_bangla",
+      "type_matches_expected": true,
+      "pages_total": 4,
+      "pages_with_text": 4,
+      "chunks": 15,
+      "extract_seconds": 0.78
+    },
+    "I1": {
+      "source_file": "9. I1_Bangladesh_Agriculture_and_Food_Security.pdf",
+      "pdf_sha256": "50125d267a8df6f2686e94d9cddae866cee3a68c287d71a263ffa04c912cf3cb",
+      "pdf_type_detected": "image_only",
+      "pdf_type_expected": "image_only",
+      "type_matches_expected": true,
+      "pages_total": 4,
+      "pages_with_text": 4,
+      "chunks": 12,
+      "extract_seconds": 7.31
+    },
+    "I2": {
+      "source_file": "11. I2_Bangladesh_Renewable_Energy.pdf",
+      "pdf_sha256": "0c690c5c2491c3101e4bcb155ad63bc71a8bff64a6b86488918e8ffc1ee57097",
+      "pdf_type_detected": "image_only",
+      "pdf_type_expected": "image_only",
+      "type_matches_expected": true,
+      "pages_total": 4,
+      "pages_with_text": 4,
+      "chunks": 15,
+      "extract_seconds": 7.86
+    },
+    "E1": {
+      "source_file": "13. E1_Artificial_Intelligence_in_Education.pdf",
+      "pdf_sha256": "ac288a7508835eb142a531f5e3169838dc76a4abe04ba7b796edc9bd41081dc3",
+      "pdf_type_detected": "english",
+      "pdf_type_expected": "english",
+      "type_matches_expected": true,
+      "pages_total": 4,
+      "pages_with_text": 4,
+      "chunks": 19,
+      "extract_seconds": 0.29
+    },
+    "E2": {
+      "source_file": "15. E2_Climate_Change_and_Sustainable_Cities.pdf",
+      "pdf_sha256": "4cdb14c7e532363e7c887b05eb5949224d12e093c7a0d90a944be30dcaf9ce39",
+      "pdf_type_detected": "english",
+      "pdf_type_expected": "english",
+      "type_matches_expected": true,
+      "pages_total": 4,
+      "pages_with_text": 4,
+      "chunks": 19,
+      "extract_seconds": 0.29
+    }
+  },
+  "total_chunks": 122,
+  "all_types_match_expected": true,
+  "determinism_check": {
+    "B1": true,
+    "B2": true,
+    "U1": true,
+    "U2": true,
+    "I1": true,
+    "I2": true,
+    "E1": true,
+    "E2": true
+  },
+  "token_stats": {
+    "A_baseline": {
+      "model": "all-MiniLM-L6-v2",
+      "max_seq_length": 256,
+      "chunks_truncated": 72,
+      "chunks_total": 122
+    },
+    "B_multilingual": {
+      "model": "paraphrase-multilingual-MiniLM-L12-v2",
+      "max_seq_length": 128,
+      "chunks_truncated": 105,
+      "chunks_total": 122
+    }
+  },
+  "output_sha256": {
+    "chunks.jsonl": "f7d768cb91a7fd35428d9347d1a0c7207c75d79674d88c9fa7064b1a5a0349ad",
+    "pages.jsonl": "a04d320e6f8644b27e31e1837253e4b4b0ed973ae0614f539010c79988be65ae"
+  }
+}

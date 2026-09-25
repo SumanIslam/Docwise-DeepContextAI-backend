@@ -13,11 +13,13 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import (
     VectorParams, Distance, PointStruct,
     Filter, FieldCondition, MatchAny, MatchValue, FilterSelector,
+    IsEmptyCondition, PayloadField,
 )
 
 from sse_starlette.sse import EventSourceResponse
 
 import os, uuid, json, shutil, sqlite3, datetime, re, io, unicodedata
+import regex as _regex   # Unicode-aware tokenisation (\p{M} = Bengali vowel signs / hasanta)
 import asyncio 
 from concurrent.futures import ThreadPoolExecutor
 
@@ -47,15 +49,64 @@ app.add_middleware(
     allow_credentials=True, allow_methods=["*"], allow_headers=["*"],
 )
 
-embed_model = SentenceTransformer("all-MiniLM-L6-v2")
-reranker    = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2", max_length=512)
+# ── Embedding / retrieval configuration ──────────────────────────────────────
+# Defaults reproduce the original system exactly (baseline configuration A).
+# Vectors from different embedding models live in different vector spaces and
+# must NEVER share a collection: when EMBED_MODEL changes, QDRANT_COLLECTION
+# must change too. The startup guard below enforces this.
+DEFAULT_EMBED_MODEL  = "all-MiniLM-L6-v2"
+EMBED_MODEL_NAME     = os.getenv("EMBED_MODEL", DEFAULT_EMBED_MODEL)
+EMBED_MAX_SEQ_LENGTH = os.getenv("EMBED_MAX_SEQ_LENGTH", "").strip()   # optional, e.g. "256"
+QDRANT_COLLECTION    = os.getenv("QDRANT_COLLECTION", "rag_docs")
+RERANK_MODEL_NAME    = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+
+embed_model = SentenceTransformer(EMBED_MODEL_NAME)
+if EMBED_MAX_SEQ_LENGTH:
+    embed_model.max_seq_length = int(EMBED_MAX_SEQ_LENGTH)
+reranker    = CrossEncoder(RERANK_MODEL_NAME, max_length=512)
+
+def _embedding_dim(model) -> int:
+    fn = getattr(model, "get_embedding_dimension", None) or model.get_sentence_embedding_dimension
+    return int(fn())
+
+EMBED_DIM = _embedding_dim(embed_model)
+print(f"[config] embed_model={EMBED_MODEL_NAME} dim={EMBED_DIM} "
+      f"max_seq_length={embed_model.max_seq_length} collection={QDRANT_COLLECTION}")
 
 qdrant = QdrantClient(path="./qdrant_data")
-if "rag_docs" not in [c.name for c in qdrant.get_collections().collections]:
+if QDRANT_COLLECTION not in [c.name for c in qdrant.get_collections().collections]:
     qdrant.create_collection(
-        "rag_docs",
-        vectors_config=VectorParams(size=384, distance=Distance.COSINE),
+        QDRANT_COLLECTION,
+        vectors_config=VectorParams(size=EMBED_DIM, distance=Distance.COSINE),
     )
+
+def _guard_collection_model():
+    """Refuse to start if the collection holds vectors from a different model."""
+    info = qdrant.get_collection(QDRANT_COLLECTION)
+    size = info.config.params.vectors.size
+    if size != EMBED_DIM:
+        raise RuntimeError(f"Collection '{QDRANT_COLLECTION}' has {size}-dim vectors but "
+                           f"{EMBED_MODEL_NAME} produces {EMBED_DIM}. Use another QDRANT_COLLECTION.")
+    def _first(flt):
+        pts, _ = qdrant.scroll(QDRANT_COLLECTION, limit=1, with_payload=True,
+                               with_vectors=False, scroll_filter=flt)
+        return pts[0] if pts else None
+    no_field = IsEmptyCondition(is_empty=PayloadField(key="embed_model"))
+    # 1) any point tagged with a DIFFERENT model?
+    foreign = _first(Filter(must_not=[
+        FieldCondition(key="embed_model", match=MatchValue(value=EMBED_MODEL_NAME)), no_field]))
+    if foreign:
+        raise RuntimeError(f"Collection '{QDRANT_COLLECTION}' contains vectors from "
+                           f"'{foreign.payload.get('embed_model')}', not '{EMBED_MODEL_NAME}'. "
+                           f"Set a different QDRANT_COLLECTION for this model.")
+    # 2) untagged points were written before this guard existed, i.e. by the
+    #    original all-MiniLM-L6-v2 setup — only acceptable for that model.
+    if EMBED_MODEL_NAME != DEFAULT_EMBED_MODEL and _first(Filter(must=[no_field])):
+        raise RuntimeError(f"Collection '{QDRANT_COLLECTION}' contains untagged vectors from "
+                           f"'{DEFAULT_EMBED_MODEL}'. Set a different QDRANT_COLLECTION for "
+                           f"'{EMBED_MODEL_NAME}'.")
+
+_guard_collection_model()
 
 # ══════════════════════════════════════════════════════════════════════════════
 # CAPABILITY FLAGS
@@ -382,7 +433,11 @@ def chunk_text(text: str, chunk_size: int = 700, overlap: int = 120) -> list:
     return chunks
 
 def tokenize(text: str) -> list:
-    return re.findall(r"\w+", text.lower())
+    # Letters + combining marks + digits. The old pattern r"\w+" does not match
+    # Bengali vowel signs (া ি ী …) or hasanta (্), so it shattered every Bengali
+    # word into consonant fragments ("বাংলাদেশ" -> "ব","ল","দ","শ") and BM25
+    # could not match Bengali words at all.
+    return _regex.findall(r"[\p{L}\p{M}\p{N}_]+", text.lower())
 
 # ══════════════════════════════════════════════════════════════════════════════
 # SQLITE
@@ -473,7 +528,7 @@ def hybrid_search(query: str, cid: str, doc_ids: list, top_k: int = 40) -> list:
     ])
 
     pool = qdrant.query_points(
-        "rag_docs", query=qv, limit=max(top_k, 200), query_filter=flt,
+        QDRANT_COLLECTION, query=qv, limit=max(top_k, 200), query_filter=flt,
     ).points
     if not pool:
         return []
@@ -577,7 +632,7 @@ def _fetch_overview_chunks(cid: str, doc_ids: list) -> list:
     # Get every chunk stored for these docs (no similarity filter)
     qv   = embed_model.encode("content summary overview").tolist()
     pool = qdrant.query_points(
-        "rag_docs", query=qv, limit=200,
+        QDRANT_COLLECTION, query=qv, limit=200,
         query_filter=Filter(must=[
             FieldCondition(key="chat_id", match=MatchValue(value=cid)),
             FieldCondition(key="doc_id",  match=MatchAny(any=doc_ids)),
@@ -649,7 +704,7 @@ def rename_chat(cid: str, body: RenameBody):
 def delete_chat(cid: str):
     c = db(); docs = c.execute("SELECT * FROM chat_docs WHERE chat_id=?",(cid,)).fetchall()
     for d in docs:
-        try: qdrant.delete("rag_docs",points_selector=FilterSelector(filter=Filter(must=[FieldCondition(key="doc_id",match=MatchValue(value=d["id"]))])))
+        try: qdrant.delete(QDRANT_COLLECTION,points_selector=FilterSelector(filter=Filter(must=[FieldCondition(key="doc_id",match=MatchValue(value=d["id"]))])))
         except Exception: pass
         try: os.remove(f"uploads/{d['id']}_{d['filename']}")
         except Exception: pass
@@ -800,14 +855,14 @@ def _process_pdf_background(path: str, doc_id: str, cid: str, filename: str):
                 payload={
                     "chat_id": cid, "doc_id": doc_id,
                     "text": chunk_texts[i], "page": chunk_pages[i],
-                    "filename": filename,
+                    "filename": filename, "embed_model": EMBED_MODEL_NAME,
                 },
             )
             for i in range(len(chunk_texts))
         ]
 
         for i in range(0, len(points), 100):
-            qdrant.upsert("rag_docs", points=points[i:i + 100])
+            qdrant.upsert(QDRANT_COLLECTION, points=points[i:i + 100])
 
         # Update page count now that we know it
         c = db()
@@ -832,7 +887,7 @@ def rename_document(cid: str, did: str, body: RenameBody):
 @app.delete("/chats/{cid}/documents/{did}")
 def delete_document(cid: str, did: str):
     c = db(); row = c.execute("SELECT filename FROM chat_docs WHERE id=? AND chat_id=?",(did,cid)).fetchone()
-    try: qdrant.delete("rag_docs",points_selector=FilterSelector(filter=Filter(must=[FieldCondition(key="doc_id",match=MatchValue(value=did))])))
+    try: qdrant.delete(QDRANT_COLLECTION,points_selector=FilterSelector(filter=Filter(must=[FieldCondition(key="doc_id",match=MatchValue(value=did))])))
     except Exception: pass
     if row:
         try: os.remove(f"uploads/{did}_{row['filename']}")

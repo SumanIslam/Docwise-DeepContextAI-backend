@@ -5,3 +5,4 @@ uploads/
 *.pyc
 qdrant_data/
 docwise.db
+evaluation/qdrant_eval/
