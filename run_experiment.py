@@ -73,9 +73,18 @@ CONFIGS = {
     "B256_multilingual": {
         "model": "paraphrase-multilingual-MiniLM-L12-v2", "max_seq_length": 256,
         "collection": "docwise_eval_B256_multilingual_minilm", "role": "supplementary"},
+    # Experiment D: a multilingual model whose training data does include Bengali.
+    # E5 models REQUIRE the "query: " / "passage: " prefixes — without them the
+    # embeddings are out of distribution, so the prefixes are part of the model,
+    # not a change to the pipeline.
+    "D_e5_bengali": {
+        "model": "intfloat/multilingual-e5-small", "max_seq_length": None,
+        "collection": "docwise_eval_D_e5_small", "role": "supplementary",
+        "query_prefix": "query: ", "passage_prefix": "passage: "},
 }
 COMPARISONS = [("A_baseline", "B_multilingual"), ("A_baseline", "B256_multilingual"),
-               ("B_multilingual", "B256_multilingual")]
+               ("B_multilingual", "B256_multilingual"),
+               ("A_baseline", "D_e5_bengali"), ("B_multilingual", "D_e5_bengali")]
 RERANK_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 EVAL_CID = "docwise-eval"
 DOCS = ["B1", "B2", "U1", "U2", "I1", "I2", "E1", "E2"]
@@ -123,6 +132,36 @@ def load_main_functions(main_path):
     return ns
 
 
+class PrefixedEmbedder:
+    """Adds the model's required instruction prefixes (E5 family).
+
+    A list of texts is a passage batch (indexing); a single string is a query —
+    exactly how main.py calls encode().
+    """
+
+    def __init__(self, model, query_prefix, passage_prefix):
+        self.m, self.qp, self.pp = model, query_prefix, passage_prefix
+
+    def encode(self, x, **kw):
+        if isinstance(x, str):
+            return self.m.encode(self.qp + x, **kw)
+        return self.m.encode([self.pp + t for t in x], **kw)
+
+    @property
+    def max_seq_length(self):
+        return self.m.max_seq_length
+
+    @max_seq_length.setter
+    def max_seq_length(self, v):
+        self.m.max_seq_length = v
+
+    def __getattr__(self, name):
+        return getattr(self.m, name)
+
+    def __getitem__(self, i):
+        return self.m[i]
+
+
 def load_embedder(cfg):
     from sentence_transformers import SentenceTransformer
     m = SentenceTransformer(cfg["model"])
@@ -135,6 +174,8 @@ def load_embedder(cfg):
         if limit is not None and cfg["max_seq_length"] > limit:
             sys.exit(f"[exp] ABORT: {cfg['model']} supports at most {limit} positions")
         m.max_seq_length = int(cfg["max_seq_length"])
+    if cfg.get("query_prefix") or cfg.get("passage_prefix"):
+        m = PrefixedEmbedder(m, cfg.get("query_prefix", ""), cfg.get("passage_prefix", ""))
     return m, default_len
 
 
@@ -168,7 +209,7 @@ def point_id(chunk_id):
 def ensure_index(client, cfg, model, chunks, chunks_sha, reindex):
     coll = cfg["collection"]
     marker = {"embed_model": cfg["model"], "embed_max_seq_length": int(model.max_seq_length),
-              "chunks_sha256": chunks_sha}
+              "chunks_sha256": chunks_sha, "passage_prefix": cfg.get("passage_prefix", "")}
     exists = coll in [c.name for c in client.get_collections().collections]
     if exists and not reindex:
         pts, _ = client.scroll(coll, limit=len(chunks) + 10, with_payload=True, with_vectors=False)
@@ -398,6 +439,9 @@ def main():
     ap.add_argument("--results", default="evaluation/results")
     ap.add_argument("--configs", nargs="+", default=list(CONFIGS), choices=list(CONFIGS))
     ap.add_argument("--reindex", action="store_true")
+    ap.add_argument("--compare-with", default=None,
+                    help="an earlier results folder; its configurations are reused for the "
+                         "comparison table so they need not be run again")
     args = ap.parse_args()
 
     chunks = read_jsonl(args.chunks)
@@ -462,6 +506,13 @@ def main():
 
     client.close()
     os.makedirs(out_dir, exist_ok=True)
+    if args.compare_with:
+        for name in CONFIGS:
+            f = os.path.join(args.compare_with, name, "per_question.jsonl")
+            if name not in per_q and os.path.exists(f):
+                per_q[name] = read_jsonl(f)
+                print(f"[exp] reusing earlier results for {name} from {args.compare_with}")
+        manifest["compare_with"] = os.path.abspath(args.compare_with)
     comp = compare(per_q, questions, out_dir)
     with open(os.path.join(out_dir, "run_manifest.json"), "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2)
