@@ -75,6 +75,14 @@ USE_RERANKER  = os.getenv("USE_RERANKER", "1").strip().lower() not in ("0", "fal
 DENSE_WEIGHT  = float(os.getenv("DENSE_WEIGHT", "1.0"))   # RRF channel weights
 BM25_WEIGHT   = float(os.getenv("BM25_WEIGHT", "1.0"))
 
+# Broken Bengali text layers (Experiment C). PDFs exported from Word with
+# Bengali fonts store their text in DISPLAY order, so extraction returns valid
+# Unicode that is nevertheless scrambled ("বাাংলাদেদের শেক্ষা"). OCR of the same
+# page is far more accurate (~95% vs ~65% agreement with the source), so pages
+# whose text fails a Bengali orthography check are re-read with OCR.
+UNICODE_OCR_FALLBACK  = os.getenv("UNICODE_OCR_FALLBACK", "1").strip().lower() not in ("0", "false", "no")
+BROKEN_TEXT_THRESHOLD = float(os.getenv("BROKEN_TEXT_THRESHOLD", "10"))  # errors per 1000 Bengali chars
+
 embed_model = SentenceTransformer(EMBED_MODEL_NAME)
 if EMBED_MAX_SEQ_LENGTH:
     embed_model.max_seq_length = int(EMBED_MAX_SEQ_LENGTH)
@@ -433,8 +441,20 @@ def extract_pages(path: str) -> list[dict]:
                 pages.append({"page": i + 1, "text": ocr_text})
             continue
 
-        # Normalise and optionally supplement with embedded image OCR
+        # Normalise, then check whether the Bengali text layer is scrambled
         text = _fix_unicode(raw)
+        if UNICODE_OCR_FALLBACK and _CAN_OCR and _HAS_BEN_LANG:
+            score = _broken_bangla_score(text)
+            if score > BROKEN_TEXT_THRESHOLD:
+                ocr_text = _ocr_page_image(path, i, dpi_scale=2.0)
+                ocr_score = _broken_bangla_score(ocr_text) if ocr_text else 999.0
+                if ocr_text and len(ocr_text.strip()) > 5 and ocr_score < score:
+                    print(f"[extract_pages] page {i + 1}: broken Bengali text layer "
+                          f"({score:.0f} errors/1000) — using OCR instead ({ocr_score:.0f})")
+                    text = ocr_text
+                else:
+                    print(f"[extract_pages] page {i + 1}: broken Bengali text layer "
+                          f"({score:.0f} errors/1000) — OCR did not improve it, keeping text")
         if _CAN_OCR:
             img_ocr = _ocr_embedded_images(path, i)
             if img_ocr:
@@ -456,6 +476,20 @@ def chunk_text(text: str, chunk_size: int = 700, overlap: int = 120) -> list:
         chunks.append(text[start:start + chunk_size])
         start += step
     return chunks
+
+# A dependent vowel sign, hasanta or nukta can never start a word, and two
+# vowel signs can never follow each other. Correctly extracted Bengali scores
+# well below 1 error per 1000 letters; scrambled text scores 50-90.
+_BROKEN_BANGLA_RE = _regex.compile(
+    r"[\u09be-\u09cc\u09d7]{2}|(?:^|\s)[\u09be-\u09cc\u09d7\u09cd\u09bc\u0981-\u0983]"
+)
+
+def _broken_bangla_score(text: str) -> float:
+    """Orthography errors per 1000 Bengali characters (0.0 if barely any Bengali)."""
+    bengali = sum(1 for ch in text if "\u0980" <= ch <= "\u09ff")
+    if bengali < 100:
+        return 0.0
+    return 1000.0 * len(_BROKEN_BANGLA_RE.findall(text)) / bengali
 
 def tokenize(text: str) -> list:
     # Letters + combining marks + digits. The old pattern r"\w+" does not match

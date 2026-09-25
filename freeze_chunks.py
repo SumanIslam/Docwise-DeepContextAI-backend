@@ -62,7 +62,8 @@ DOC_CODES = ["B1", "B2", "U1", "U2", "I1", "I2", "E1", "E2"]
 EXPECTED_TYPE = {"B": "bijoy", "U": "unicode_bangla", "I": "image_only", "E": "english"}
 FUNCS_FROM_MAIN = [
     "_is_unicode_bangla", "_is_garbled", "_fix_unicode", "_ocr_page_image",
-    "_ocr_embedded_images", "_classify_pdf", "extract_pages", "chunk_text",
+    "_ocr_embedded_images", "_classify_pdf", "_broken_bangla_score",
+    "extract_pages", "chunk_text",
 ]
 EMBED_MODELS = {
     "A_baseline": "all-MiniLM-L6-v2",
@@ -120,10 +121,14 @@ def load_pipeline(main_path, tesseract_cmd):
     if missing:
         sys.exit(f"[freeze] ABORT: functions not found in main.py: {missing}")
 
+    import regex
     namespace = {
         "__name__": "docwise_main_extract",
-        "PdfReader": PdfReader, "io": io, "os": os, "re": re, "unicodedata": unicodedata,
-        "_CAN_OCR": True, "_HAS_BEN_LANG": True,
+        "PdfReader": PdfReader, "io": io, "os": os, "re": re, "_regex": regex,
+        "unicodedata": unicodedata, "_CAN_OCR": True, "_HAS_BEN_LANG": True,
+        # Experiment C switches — taken from the command line, never from .env,
+        # so a freeze is always reproducible from the recorded settings.
+        "UNICODE_OCR_FALLBACK": True, "BROKEN_TEXT_THRESHOLD": 10.0,
     }
     code = compile(ast.Module(body=wanted, type_ignores=[]), main_path, "exec")
     exec(code, namespace)
@@ -227,6 +232,10 @@ def main():
     ap.add_argument("--check-determinism", action="store_true")
     ap.add_argument("--no-token-stats", action="store_true")
     ap.add_argument("--force", action="store_true")
+    ap.add_argument("--no-ocr-fallback", action="store_true",
+                    help="reproduce the original extraction: keep broken Bengali text layers")
+    ap.add_argument("--broken-threshold", type=float, default=10.0,
+                    help="Bengali orthography errors per 1000 characters above which a page is re-read with OCR")
     args = ap.parse_args()
 
     if os.path.exists(os.path.join(args.out, "chunks.jsonl")) and not args.force:
@@ -235,6 +244,8 @@ def main():
     os.makedirs(args.out, exist_ok=True)
 
     ns, tess_env = load_pipeline(args.main, args.tesseract_cmd)
+    ns["UNICODE_OCR_FALLBACK"] = not args.no_ocr_fallback
+    ns["BROKEN_TEXT_THRESHOLD"] = args.broken_threshold
     pdfs = find_pdfs(args.pdf_dir)
     print(f"[freeze] main.py sha256 = {sha256_file(args.main)[:16]}...")
     print(f"[freeze] Tesseract {tess_env['tesseract_version']}  langs={tess_env['tesseract_languages']}")
@@ -296,6 +307,8 @@ def main():
             "main_py_sha256": sha256_file(args.main),
             "functions_used_from_main_py": FUNCS_FROM_MAIN,
             "chunk_size": 700, "chunk_overlap": 120,
+            "unicode_ocr_fallback": not args.no_ocr_fallback,
+            "broken_text_threshold": args.broken_threshold,
             "min_chunk_chars": MIN_CHUNK_CHARS, "max_chunk_chars": MAX_CHUNK_CHARS,
         },
         "environment": {
