@@ -1,0 +1,82 @@
+{
+  "run_id": "20260925-112818",
+  "experiment": "E — retrieval pipeline variants",
+  "created_utc": "2026-09-25T05:28:23+00:00",
+  "embedding_config": {
+    "model": "intfloat/multilingual-e5-small",
+    "max_seq_length": null,
+    "collection": "docwise_eval_D_e5_small",
+    "role": "supplementary",
+    "query_prefix": "query: ",
+    "passage_prefix": "passage: ",
+    "fixed_for_this_experiment": true
+  },
+  "settings": {
+    "dense_weight": 0.8,
+    "bm25_weight": 0.2,
+    "rrf_k": 60,
+    "top_k": 40,
+    "bge_candidates": 20,
+    "msmarco_floor_for_production": -6.0,
+    "production_top_n": 5,
+    "reference_variant": "V5_hybrid_rrf_msmarco"
+  },
+  "inputs_sha256": {
+    "main.py": "423bc2e6a7a56d5f5543671a4c4a2f8ca926f3338d6021ac9cf3da1e945bcace",
+    "chunks": "f7d768cb91a7fd35428d9347d1a0c7207c75d79674d88c9fa7064b1a5a0349ad",
+    "questions": "dab1cf705b6ce682a2adc760def953806384e0dafc2eb9c8d36ccc6e420da521",
+    "qrels": "693600ab126a06194771fa531568e185bbee0292c450ff991fda66a4a4a638b1"
+  },
+  "environment": {
+    "python": "3.14.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "sentence-transformers": "5.5.1",
+    "transformers": "5.9.0",
+    "torch": "2.12.0",
+    "qdrant-client": "1.18.0",
+    "rank-bm25": "0.2.2",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1"
+  },
+  "variants": {
+    "V1_dense_only": {
+      "retrieval": "dense",
+      "rerank": null,
+      "seconds": 0.0,
+      "questions_emptied_by_floor": null
+    },
+    "V2_hybrid_rrf": {
+      "retrieval": "hybrid_rrf",
+      "rerank": null,
+      "seconds": 0.0,
+      "questions_emptied_by_floor": null
+    },
+    "V3_hybrid_weighted": {
+      "retrieval": "hybrid_weighted",
+      "rerank": null,
+      "seconds": 0.0,
+      "questions_emptied_by_floor": null
+    },
+    "V4_dense_msmarco": {
+      "retrieval": "dense",
+      "rerank": "msmarco",
+      "seconds": 474.7,
+      "questions_emptied_by_floor": 30
+    },
+    "V5_hybrid_rrf_msmarco": {
+      "retrieval": "hybrid_rrf",
+      "rerank": "msmarco",
+      "seconds": 122.8,
+      "questions_emptied_by_floor": 30
+    },
+    "V6_hybrid_weighted_msmarco": {
+      "retrieval": "hybrid_weighted",
+      "rerank": "msmarco",
+      "seconds": 1.3,
+      "questions_emptied_by_floor": 30
+    }
+  },
+  "reranker_pairs_scored": {
+    "msmarco": 10528
+  }
+}
