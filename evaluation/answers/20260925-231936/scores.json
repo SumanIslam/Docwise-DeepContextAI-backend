@@ -9,9 +9,9 @@
     "fully_correct": 1.0,
     "partly_correct": 0.0,
     "wrong": 0.0,
-    "grounded_yes": 0.875,
-    "grounded_partial": 0.0,
-    "hallucinated": 0.125,
+    "grounded_yes": 0.896,
+    "grounded_partial": 0.042,
+    "hallucinated": 0.062,
     "language_ok": 1.0
   },
   "groups": {
@@ -44,9 +44,9 @@
         "fully_correct": 1.0,
         "partly_correct": 0.0,
         "wrong": 0.0,
-        "grounded_yes": 0.75,
-        "grounded_partial": 0.0,
-        "hallucinated": 0.25,
+        "grounded_yes": 0.833,
+        "grounded_partial": 0.167,
+        "hallucinated": 0.0,
         "language_ok": 1.0
       },
       "Unicode Bengali": {
@@ -69,8 +69,8 @@
         "partly_correct": 0.0,
         "wrong": 0.0,
         "grounded_yes": 0.844,
-        "grounded_partial": 0.0,
-        "hallucinated": 0.156,
+        "grounded_partial": 0.062,
+        "hallucinated": 0.094,
         "language_ok": 1.0
       },
       "en": {
@@ -79,9 +79,9 @@
         "fully_correct": 1.0,
         "partly_correct": 0.0,
         "wrong": 0.0,
-        "grounded_yes": 0.938,
+        "grounded_yes": 1.0,
         "grounded_partial": 0.0,
-        "hallucinated": 0.062,
+        "hallucinated": 0.0,
         "language_ok": 1.0
       }
     },
@@ -93,8 +93,8 @@
         "partly_correct": 0.0,
         "wrong": 0.0,
         "grounded_yes": 0.625,
-        "grounded_partial": 0.0,
-        "hallucinated": 0.375,
+        "grounded_partial": 0.125,
+        "hallucinated": 0.25,
         "language_ok": 1.0
       },
       "Conceptual": {
@@ -104,8 +104,8 @@
         "partly_correct": 0.0,
         "wrong": 0.0,
         "grounded_yes": 0.875,
-        "grounded_partial": 0.0,
-        "hallucinated": 0.125,
+        "grounded_partial": 0.125,
+        "hallucinated": 0.0,
         "language_ok": 1.0
       },
       "Cross-lingual": {
@@ -114,9 +114,9 @@
         "fully_correct": 1.0,
         "partly_correct": 0.0,
         "wrong": 0.0,
-        "grounded_yes": 0.875,
+        "grounded_yes": 1.0,
         "grounded_partial": 0.0,
-        "hallucinated": 0.125,
+        "hallucinated": 0.0,
         "language_ok": 1.0
       },
       "Direct / Factual": {
