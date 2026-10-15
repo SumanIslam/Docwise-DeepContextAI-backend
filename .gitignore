@@ -2,5 +2,9 @@ venv/
 __pycache__/
 uploads/
 .env
+.env.new
+.env.old
 *.pyc
 qdrant_data/
+docwise.db
+evaluation/qdrant_eval/

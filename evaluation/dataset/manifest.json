@@ -1,0 +1,99 @@
+{
+  "dataset": "Docwise fixed evaluation set",
+  "version": "v1",
+  "questions": 200,
+  "per_document": {
+    "B1": 25,
+    "B2": 25,
+    "U1": 25,
+    "U2": 25,
+    "I1": 25,
+    "I2": 25,
+    "E1": 25,
+    "E2": 25
+  },
+  "by_question_type": {
+    "Direct / Factual": 40,
+    "Semantic / Paraphrased": 48,
+    "Conceptual": 32,
+    "Cross-lingual": 48,
+    "Multi-hop / Comparative": 16,
+    "Challenging / Indirect": 16
+  },
+  "by_query_language": {
+    "bn": 126,
+    "en": 74
+  },
+  "by_cross_lingual_direction": {
+    "none": 152,
+    "en->bn": 36,
+    "bn->en": 12
+  },
+  "multi_section_questions": 33,
+  "section_check": {
+    "B1": {
+      "sections": 12,
+      "gt_sections_used": 10,
+      "gt_sections_not_found": []
+    },
+    "B2": {
+      "sections": 12,
+      "gt_sections_used": 10,
+      "gt_sections_not_found": []
+    },
+    "U1": {
+      "sections": 12,
+      "gt_sections_used": 10,
+      "gt_sections_not_found": []
+    },
+    "U2": {
+      "sections": 12,
+      "gt_sections_used": 12,
+      "gt_sections_not_found": []
+    },
+    "I1": {
+      "sections": 12,
+      "gt_sections_used": 9,
+      "gt_sections_not_found": []
+    },
+    "I2": {
+      "sections": 11,
+      "gt_sections_used": 10,
+      "gt_sections_not_found": []
+    },
+    "E1": {
+      "sections": 11,
+      "gt_sections_used": 9,
+      "gt_sections_not_found": []
+    },
+    "E2": {
+      "sections": 11,
+      "gt_sections_used": 10,
+      "gt_sections_not_found": []
+    }
+  },
+  "source_files_sha256": {
+    "10__I1_Evaluation_Questions.docx": "2503bc10f7def0bf14b4d42780f7cc2734995fb294c0842d296ca96bdddf35dd",
+    "11__I2_Bangladesh_Renewable_Energy.docx": "90a13d02d08971cb5d51b30181c9a9895e58df99d8c3fe23ea5579c34cfc096c",
+    "12__I2_Evaluation_Questions.docx": "12c12e54f34f978cfa858ffe272665a47deb53de520ea606198bf07cb96f60a5",
+    "13__E1_Artificial_Intelligence_in_Education.docx": "577b5996495b4130505330e09699da44a50c74ac116abcfb1e74545b63dec9a0",
+    "14__E1_Evaluation_Questions.docx": "c44b327bf325e272bf7e84f89b12f1fd855877f578c4282a197166a864979ff0",
+    "15__E2_Climate_Change_and_Sustainable_Cities.docx": "dff7eda091d82266a82cdef398aaf5c90c16ae4a8cc13e4cce87ddfd4a5dffd7",
+    "16__E2_Evaluation_Questions.docx": "a9a7ca697aa05484dc7b5919e6c01ddd53d5970815d50fe70678211bd5ec2fb2",
+    "1__B1_Bangladesh_Rivers_and_Water_Resources.docx": "052b8f2de08e352fcef6d08a385b0f42f6be2142faeb1caef4801c560f40922d",
+    "2__B1_Evaluation_Questions.docx": "fe4be2ca181dd4c5ced0e2c0ac40a865be8edac0fa4eea946500f3aadee28ddd",
+    "3__B2_Bangladesh_Liberation_War_and_Independence.docx": "101911e963c6fee07174a89adff81bc6cf94adbd69d9af8229328a4dca826f2e",
+    "4__B2_Evaluation_Questions.docx": "8450080a2cb2958f2dc720ec4b948063a8d15be16e0ca29c2c7678acac7621bb",
+    "5__U1_Bangladesh_Education_and_Digital_Technology.docx": "08e4a73860c3a22502ada9a8227e5a155921c77d2b91a593963e0bb2fb1bdfb8",
+    "6__U1_Evaluation_Questions.docx": "4876d144de38ca4cbf5411926cc795ccb3b3d557ff40ef1d08af2da2b800c9bf",
+    "7__U2_Bangladesh_Disaster_Management.docx": "9a74328cb47e360bb427de32ea673a736b531dc97e246a2aed184976765d9d23",
+    "8__U2_Evaluation_Questions.docx": "f7fc40cc1dbf14e82e31403cbdb268a38916af755f789b1277cec4f3dee5df74",
+    "9__I1_Bangladesh_Agriculture_and_Food_Security.docx": "74422109c0876a95d552866c482c014d8adf42db4504f57af10aa7beb5bda447"
+  },
+  "output_files_sha256": {
+    "questions.csv": "200ac578ac7db69b753652385d5049a2fceafd371f428260af834fc1221b5997",
+    "questions.jsonl": "dab1cf705b6ce682a2adc760def953806384e0dafc2eb9c8d36ccc6e420da521",
+    "sections.jsonl": "ea02b26d6bab4a71b5b33c1948a10cd1ad88f11db703a62136d751e03adc6289"
+  },
+  "note": "Question text, types, languages, IDs and ground-truth sections copied verbatim from the source tables. Only doc metadata and cross_lingual_direction are derived. sections.jsonl is an annotation aid for relevance labelling."
+}

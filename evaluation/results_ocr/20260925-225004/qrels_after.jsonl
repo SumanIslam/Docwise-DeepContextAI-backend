@@ -1,0 +1,353 @@
+{"question_id": "B1-Q01", "chunk_id": "B1-p01-c02", "relevant": 1, "matched_sections": ["প্রধান নদী ব্যবস্থা"]}
+{"question_id": "B1-Q02", "chunk_id": "B1-p01-c02", "relevant": 1, "matched_sections": ["প্রধান নদী ব্যবস্থা"]}
+{"question_id": "B1-Q03", "chunk_id": "B1-p03-c03", "relevant": 1, "matched_sections": ["আন্তঃসীমান্ত নদী ও পানি বণ্টন"]}
+{"question_id": "B1-Q03", "chunk_id": "B1-p03-c04", "relevant": 1, "matched_sections": ["আন্তঃসীমান্ত নদী ও পানি বণ্টন"]}
+{"question_id": "B1-Q04", "chunk_id": "B1-p03-c01", "relevant": 1, "matched_sections": ["পানি দূষণের সমস্যা"]}
+{"question_id": "B1-Q05", "chunk_id": "B1-p02-c02", "relevant": 1, "matched_sections": ["মৎস্যসম্পদ ও জীববৈচিত্র্য"]}
+{"question_id": "B1-Q06", "chunk_id": "B1-p01-c03", "relevant": 1, "matched_sections": ["কৃষিতে নদীর ভূমিকা"]}
+{"question_id": "B1-Q06", "chunk_id": "B1-p01-c04", "relevant": 1, "matched_sections": ["কৃষিতে নদীর ভূমিকা"]}
+{"question_id": "B1-Q07", "chunk_id": "B1-p02-c01", "relevant": 1, "matched_sections": ["নৌপরিবহন ও যোগাযোগ"]}
+{"question_id": "B1-Q08", "chunk_id": "B1-p03-c01", "relevant": 1, "matched_sections": ["পানি দূষণের সমস্যা"]}
+{"question_id": "B1-Q09", "chunk_id": "B1-p03-c02", "relevant": 1, "matched_sections": ["জলবায়ু পরিবর্তন ও পানি সম্পদ"]}
+{"question_id": "B1-Q10", "chunk_id": "B1-p03-c03", "relevant": 1, "matched_sections": ["আন্তঃসীমান্ত নদী ও পানি বণ্টন"]}
+{"question_id": "B1-Q10", "chunk_id": "B1-p03-c04", "relevant": 1, "matched_sections": ["আন্তঃসীমান্ত নদী ও পানি বণ্টন"]}
+{"question_id": "B1-Q11", "chunk_id": "B1-p04-c01", "relevant": 1, "matched_sections": ["টেকসই পানি ব্যবস্থাপনা"]}
+{"question_id": "B1-Q12", "chunk_id": "B1-p02-c02", "relevant": 1, "matched_sections": ["মৎস্যসম্পদ ও জীববৈচিত্র্য"]}
+{"question_id": "B1-Q13", "chunk_id": "B1-p02-c04", "relevant": 1, "matched_sections": ["বন্যা ও নদীর সম্পর্ক"]}
+{"question_id": "B1-Q14", "chunk_id": "B1-p01-c03", "relevant": 1, "matched_sections": ["কৃষিতে নদীর ভূমিকা"]}
+{"question_id": "B1-Q14", "chunk_id": "B1-p01-c04", "relevant": 1, "matched_sections": ["কৃষিতে নদীর ভূমিকা"]}
+{"question_id": "B1-Q14", "chunk_id": "B1-p01-c02", "relevant": 1, "matched_sections": ["প্রধান নদী ব্যবস্থা"]}
+{"question_id": "B1-Q15", "chunk_id": "B1-p03-c03", "relevant": 1, "matched_sections": ["আন্তঃসীমান্ত নদী ও পানি বণ্টন"]}
+{"question_id": "B1-Q15", "chunk_id": "B1-p03-c04", "relevant": 1, "matched_sections": ["আন্তঃসীমান্ত নদী ও পানি বণ্টন"]}
+{"question_id": "B1-Q16", "chunk_id": "B1-p01-c02", "relevant": 1, "matched_sections": ["প্রধান নদী ব্যবস্থা"]}
+{"question_id": "B1-Q17", "chunk_id": "B1-p01-c03", "relevant": 1, "matched_sections": ["কৃষিতে নদীর ভূমিকা"]}
+{"question_id": "B1-Q17", "chunk_id": "B1-p01-c04", "relevant": 1, "matched_sections": ["কৃষিতে নদীর ভূমিকা"]}
+{"question_id": "B1-Q18", "chunk_id": "B1-p02-c03", "relevant": 1, "matched_sections": ["নদীভাঙন ও মানুষের জীবন"]}
+{"question_id": "B1-Q19", "chunk_id": "B1-p03-c01", "relevant": 1, "matched_sections": ["পানি দূষণের সমস্যা"]}
+{"question_id": "B1-Q20", "chunk_id": "B1-p03-c02", "relevant": 1, "matched_sections": ["জলবায়ু পরিবর্তন ও পানি সম্পদ"]}
+{"question_id": "B1-Q21", "chunk_id": "B1-p02-c01", "relevant": 1, "matched_sections": ["নৌপরিবহন ও যোগাযোগ"]}
+{"question_id": "B1-Q22", "chunk_id": "B1-p01-c03", "relevant": 1, "matched_sections": ["কৃষিতে নদীর ভূমিকা"]}
+{"question_id": "B1-Q22", "chunk_id": "B1-p01-c04", "relevant": 1, "matched_sections": ["কৃষিতে নদীর ভূমিকা"]}
+{"question_id": "B1-Q22", "chunk_id": "B1-p02-c01", "relevant": 1, "matched_sections": ["নৌপরিবহন ও যোগাযোগ"]}
+{"question_id": "B1-Q23", "chunk_id": "B1-p02-c04", "relevant": 1, "matched_sections": ["বন্যা ও নদীর সম্পর্ক"]}
+{"question_id": "B1-Q23", "chunk_id": "B1-p02-c03", "relevant": 1, "matched_sections": ["নদীভাঙন ও মানুষের জীবন"]}
+{"question_id": "B1-Q24", "chunk_id": "B1-p02-c03", "relevant": 1, "matched_sections": ["নদীভাঙন ও মানুষের জীবন"]}
+{"question_id": "B1-Q25", "chunk_id": "B1-p03-c01", "relevant": 1, "matched_sections": ["পানি দূষণের সমস্যা"]}
+{"question_id": "B2-Q01", "chunk_id": "B2-p02-c02", "relevant": 1, "matched_sections": ["মুজিবনগর সরকার গঠন"]}
+{"question_id": "B2-Q01", "chunk_id": "B2-p02-c03", "relevant": 1, "matched_sections": ["মুজিবনগর সরকার গঠন"]}
+{"question_id": "B2-Q02", "chunk_id": "B2-p02-c03", "relevant": 1, "matched_sections": ["মুক্তিবাহিনী ও সামরিক কৌশল"]}
+{"question_id": "B2-Q02", "chunk_id": "B2-p02-c04", "relevant": 1, "matched_sections": ["মুক্তিবাহিনী ও সামরিক কৌশল"]}
+{"question_id": "B2-Q03", "chunk_id": "B2-p02-c01", "relevant": 1, "matched_sections": ["গণহত্যা ও স্বাধীনতার ঘোষণা"]}
+{"question_id": "B2-Q03", "chunk_id": "B2-p02-c02", "relevant": 1, "matched_sections": ["গণহত্যা ও স্বাধীনতার ঘোষণা"]}
+{"question_id": "B2-Q04", "chunk_id": "B2-p02-c03", "relevant": 1, "matched_sections": ["মুক্তিবাহিনী ও সামরিক কৌশল"]}
+{"question_id": "B2-Q04", "chunk_id": "B2-p02-c04", "relevant": 1, "matched_sections": ["মুক্তিবাহিনী ও সামরিক কৌশল"]}
+{"question_id": "B2-Q05", "chunk_id": "B2-p01-c04", "relevant": 1, "matched_sections": ["নির্বাচন ও অসহযোগ আন্দোলন"]}
+{"question_id": "B2-Q05", "chunk_id": "B2-p02-c01", "relevant": 1, "matched_sections": ["নির্বাচন ও অসহযোগ আন্দোলন"]}
+{"question_id": "B2-Q06", "chunk_id": "B2-p01-c02", "relevant": 1, "matched_sections": ["পটভূমি ও রাজনৈতিক প্রেক্ষাপট"]}
+{"question_id": "B2-Q07", "chunk_id": "B2-p01-c04", "relevant": 1, "matched_sections": ["নির্বাচন ও অসহযোগ আন্দোলন"]}
+{"question_id": "B2-Q07", "chunk_id": "B2-p02-c01", "relevant": 1, "matched_sections": ["নির্বাচন ও অসহযোগ আন্দোলন"]}
+{"question_id": "B2-Q08", "chunk_id": "B2-p02-c03", "relevant": 1, "matched_sections": ["মুক্তিবাহিনী ও সামরিক কৌশল"]}
+{"question_id": "B2-Q08", "chunk_id": "B2-p02-c04", "relevant": 1, "matched_sections": ["মুক্তিবাহিনী ও সামরিক কৌশল"]}
+{"question_id": "B2-Q09", "chunk_id": "B2-p03-c02", "relevant": 1, "matched_sections": ["নারী, শরণার্থী ও মানবিক বিপর্যয়"]}
+{"question_id": "B2-Q09", "chunk_id": "B2-p03-c03", "relevant": 1, "matched_sections": ["নারী, শরণার্থী ও মানবিক বিপর্যয়"]}
+{"question_id": "B2-Q09", "chunk_id": "B2-p02-c01", "relevant": 1, "matched_sections": ["গণহত্যা ও স্বাধীনতার ঘোষণা"]}
+{"question_id": "B2-Q09", "chunk_id": "B2-p02-c02", "relevant": 1, "matched_sections": ["গণহত্যা ও স্বাধীনতার ঘোষণা"]}
+{"question_id": "B2-Q10", "chunk_id": "B2-p03-c01", "relevant": 1, "matched_sections": ["আন্তর্জাতিক প্রতিক্রিয়া ও কূটনীতি"]}
+{"question_id": "B2-Q11", "chunk_id": "B2-p01-c03", "relevant": 1, "matched_sections": ["ছয় দফা ও ঊনসত্তরের গণঅভ্যুত্থান"]}
+{"question_id": "B2-Q11", "chunk_id": "B2-p01-c04", "relevant": 1, "matched_sections": ["ছয় দফা ও ঊনসত্তরের গণঅভ্যুত্থান"]}
+{"question_id": "B2-Q12", "chunk_id": "B2-p02-c02", "relevant": 1, "matched_sections": ["মুজিবনগর সরকার গঠন"]}
+{"question_id": "B2-Q12", "chunk_id": "B2-p02-c03", "relevant": 1, "matched_sections": ["মুজিবনগর সরকার গঠন"]}
+{"question_id": "B2-Q12", "chunk_id": "B2-p01-c04", "relevant": 1, "matched_sections": ["নির্বাচন ও অসহযোগ আন্দোলন"]}
+{"question_id": "B2-Q12", "chunk_id": "B2-p02-c01", "relevant": 1, "matched_sections": ["নির্বাচন ও অসহযোগ আন্দোলন"]}
+{"question_id": "B2-Q13", "chunk_id": "B2-p01-c03", "relevant": 1, "matched_sections": ["ছয় দফা ও ঊনসত্তরের গণঅভ্যুত্থান"]}
+{"question_id": "B2-Q13", "chunk_id": "B2-p01-c04", "relevant": 1, "matched_sections": ["ছয় দফা ও ঊনসত্তরের গণঅভ্যুত্থান"]}
+{"question_id": "B2-Q13", "chunk_id": "B2-p01-c02", "relevant": 1, "matched_sections": ["পটভূমি ও রাজনৈতিক প্রেক্ষাপট"]}
+{"question_id": "B2-Q14", "chunk_id": "B2-p02-c03", "relevant": 1, "matched_sections": ["মুক্তিবাহিনী ও সামরিক কৌশল"]}
+{"question_id": "B2-Q14", "chunk_id": "B2-p02-c04", "relevant": 1, "matched_sections": ["মুক্তিবাহিনী ও সামরিক কৌশল"]}
+{"question_id": "B2-Q15", "chunk_id": "B2-p03-c04", "relevant": 1, "matched_sections": ["স্বাধীনতার তাৎপর্য ও উত্তরাধিকার"]}
+{"question_id": "B2-Q16", "chunk_id": "B2-p03-c03", "relevant": 1, "matched_sections": ["চূড়ান্ত বিজয় ও আত্মসমর্পণ"]}
+{"question_id": "B2-Q17", "chunk_id": "B2-p01-c02", "relevant": 1, "matched_sections": ["পটভূমি ও রাজনৈতিক প্রেক্ষাপট"]}
+{"question_id": "B2-Q18", "chunk_id": "B2-p02-c02", "relevant": 1, "matched_sections": ["মুজিবনগর সরকার গঠন"]}
+{"question_id": "B2-Q18", "chunk_id": "B2-p02-c03", "relevant": 1, "matched_sections": ["মুজিবনগর সরকার গঠন"]}
+{"question_id": "B2-Q19", "chunk_id": "B2-p03-c01", "relevant": 1, "matched_sections": ["আন্তর্জাতিক প্রতিক্রিয়া ও কূটনীতি"]}
+{"question_id": "B2-Q20", "chunk_id": "B2-p03-c02", "relevant": 1, "matched_sections": ["নারী, শরণার্থী ও মানবিক বিপর্যয়"]}
+{"question_id": "B2-Q20", "chunk_id": "B2-p03-c03", "relevant": 1, "matched_sections": ["নারী, শরণার্থী ও মানবিক বিপর্যয়"]}
+{"question_id": "B2-Q21", "chunk_id": "B2-p01-c04", "relevant": 1, "matched_sections": ["নির্বাচন ও অসহযোগ আন্দোলন"]}
+{"question_id": "B2-Q21", "chunk_id": "B2-p02-c01", "relevant": 1, "matched_sections": ["নির্বাচন ও অসহযোগ আন্দোলন"]}
+{"question_id": "B2-Q22", "chunk_id": "B2-p01-c04", "relevant": 1, "matched_sections": ["নির্বাচন ও অসহযোগ আন্দোলন"]}
+{"question_id": "B2-Q22", "chunk_id": "B2-p02-c01", "relevant": 1, "matched_sections": ["নির্বাচন ও অসহযোগ আন্দোলন"]}
+{"question_id": "B2-Q22", "chunk_id": "B2-p02-c03", "relevant": 1, "matched_sections": ["মুক্তিবাহিনী ও সামরিক কৌশল"]}
+{"question_id": "B2-Q22", "chunk_id": "B2-p02-c04", "relevant": 1, "matched_sections": ["মুক্তিবাহিনী ও সামরিক কৌশল"]}
+{"question_id": "B2-Q23", "chunk_id": "B2-p03-c01", "relevant": 1, "matched_sections": ["আন্তর্জাতিক প্রতিক্রিয়া ও কূটনীতি"]}
+{"question_id": "B2-Q23", "chunk_id": "B2-p03-c03", "relevant": 1, "matched_sections": ["চূড়ান্ত বিজয় ও আত্মসমর্পণ"]}
+{"question_id": "B2-Q24", "chunk_id": "B2-p01-c04", "relevant": 1, "matched_sections": ["নির্বাচন ও অসহযোগ আন্দোলন"]}
+{"question_id": "B2-Q24", "chunk_id": "B2-p02-c01", "relevant": 1, "matched_sections": ["নির্বাচন ও অসহযোগ আন্দোলন"]}
+{"question_id": "B2-Q25", "chunk_id": "B2-p02-c02", "relevant": 1, "matched_sections": ["মুজিবনগর সরকার গঠন"]}
+{"question_id": "B2-Q25", "chunk_id": "B2-p02-c03", "relevant": 1, "matched_sections": ["মুজিবনগর সরকার গঠন"]}
+{"question_id": "U1-Q01", "chunk_id": "U1-p01-c02", "relevant": 1, "matched_sections": ["শিক্ষাব্যবস্থার কাঠামো"]}
+{"question_id": "U1-Q02", "chunk_id": "U1-p02-c02", "relevant": 1, "matched_sections": ["অনলাইন শিক্ষা ও দূরশিক্ষণ"]}
+{"question_id": "U1-Q03", "chunk_id": "U1-p01-c02", "relevant": 1, "matched_sections": ["শিক্ষাব্যবস্থার কাঠামো"]}
+{"question_id": "U1-Q04", "chunk_id": "U1-p01-c02", "relevant": 1, "matched_sections": ["শিক্ষাব্যবস্থার কাঠামো"]}
+{"question_id": "U1-Q05", "chunk_id": "U1-p01-c03", "relevant": 1, "matched_sections": ["প্রাথমিক ও গণশিক্ষার অগ্রগতি"]}
+{"question_id": "U1-Q05", "chunk_id": "U1-p01-c04", "relevant": 1, "matched_sections": ["প্রাথমিক ও গণশিক্ষার অগ্রগতি"]}
+{"question_id": "U1-Q06", "chunk_id": "U1-p02-c01", "relevant": 1, "matched_sections": ["ডিজিটাল বাংলাদেশ ও শিক্ষায় প্রযুক্তি"]}
+{"question_id": "U1-Q07", "chunk_id": "U1-p02-c03", "relevant": 1, "matched_sections": ["কারিগরি ও বৃত্তিমূলক শিক্ষা"]}
+{"question_id": "U1-Q08", "chunk_id": "U1-p02-c04", "relevant": 1, "matched_sections": ["ডিজিটাল বৈষম্য ও প্রবেশাধিকার"]}
+{"question_id": "U1-Q08", "chunk_id": "U1-p03-c01", "relevant": 1, "matched_sections": ["ডিজিটাল বৈষম্য ও প্রবেশাধিকার"]}
+{"question_id": "U1-Q09", "chunk_id": "U1-p01-c03", "relevant": 1, "matched_sections": ["প্রাথমিক ও গণশিক্ষার অগ্রগতি"]}
+{"question_id": "U1-Q09", "chunk_id": "U1-p01-c04", "relevant": 1, "matched_sections": ["প্রাথমিক ও গণশিক্ষার অগ্রগতি"]}
+{"question_id": "U1-Q10", "chunk_id": "U1-p02-c02", "relevant": 1, "matched_sections": ["অনলাইন শিক্ষা ও দূরশিক্ষণ"]}
+{"question_id": "U1-Q11", "chunk_id": "U1-p03-c04", "relevant": 1, "matched_sections": ["চ্যালেঞ্জ ও সীমাবদ্ধতা"]}
+{"question_id": "U1-Q12", "chunk_id": "U1-p03-c01", "relevant": 1, "matched_sections": ["শিক্ষক প্রশিক্ষণ ও গুণগত মান"]}
+{"question_id": "U1-Q12", "chunk_id": "U1-p03-c02", "relevant": 1, "matched_sections": ["শিক্ষক প্রশিক্ষণ ও গুণগত মান"]}
+{"question_id": "U1-Q13", "chunk_id": "U1-p02-c04", "relevant": 1, "matched_sections": ["ডিজিটাল বৈষম্য ও প্রবেশাধিকার"]}
+{"question_id": "U1-Q13", "chunk_id": "U1-p03-c01", "relevant": 1, "matched_sections": ["ডিজিটাল বৈষম্য ও প্রবেশাধিকার"]}
+{"question_id": "U1-Q14", "chunk_id": "U1-p04-c01", "relevant": 1, "matched_sections": ["ভবিষ্যৎ সম্ভাবনা"]}
+{"question_id": "U1-Q14", "chunk_id": "U1-p02-c03", "relevant": 1, "matched_sections": ["কারিগরি ও বৃত্তিমূলক শিক্ষা"]}
+{"question_id": "U1-Q15", "chunk_id": "U1-p03-c02", "relevant": 1, "matched_sections": ["উচ্চশিক্ষা ও গবেষণা"]}
+{"question_id": "U1-Q15", "chunk_id": "U1-p03-c03", "relevant": 1, "matched_sections": ["উচ্চশিক্ষা ও গবেষণা"]}
+{"question_id": "U1-Q16", "chunk_id": "U1-p01-c02", "relevant": 1, "matched_sections": ["শিক্ষাব্যবস্থার কাঠামো"]}
+{"question_id": "U1-Q17", "chunk_id": "U1-p02-c02", "relevant": 1, "matched_sections": ["অনলাইন শিক্ষা ও দূরশিক্ষণ"]}
+{"question_id": "U1-Q18", "chunk_id": "U1-p02-c04", "relevant": 1, "matched_sections": ["ডিজিটাল বৈষম্য ও প্রবেশাধিকার"]}
+{"question_id": "U1-Q18", "chunk_id": "U1-p03-c01", "relevant": 1, "matched_sections": ["ডিজিটাল বৈষম্য ও প্রবেশাধিকার"]}
+{"question_id": "U1-Q19", "chunk_id": "U1-p02-c03", "relevant": 1, "matched_sections": ["কারিগরি ও বৃত্তিমূলক শিক্ষা"]}
+{"question_id": "U1-Q20", "chunk_id": "U1-p03-c01", "relevant": 1, "matched_sections": ["শিক্ষক প্রশিক্ষণ ও গুণগত মান"]}
+{"question_id": "U1-Q20", "chunk_id": "U1-p03-c02", "relevant": 1, "matched_sections": ["শিক্ষক প্রশিক্ষণ ও গুণগত মান"]}
+{"question_id": "U1-Q21", "chunk_id": "U1-p01-c03", "relevant": 1, "matched_sections": ["প্রাথমিক ও গণশিক্ষার অগ্রগতি"]}
+{"question_id": "U1-Q21", "chunk_id": "U1-p01-c04", "relevant": 1, "matched_sections": ["প্রাথমিক ও গণশিক্ষার অগ্রগতি"]}
+{"question_id": "U1-Q22", "chunk_id": "U1-p02-c01", "relevant": 1, "matched_sections": ["ডিজিটাল বাংলাদেশ ও শিক্ষায় প্রযুক্তি"]}
+{"question_id": "U1-Q22", "chunk_id": "U1-p02-c04", "relevant": 1, "matched_sections": ["ডিজিটাল বৈষম্য ও প্রবেশাধিকার"]}
+{"question_id": "U1-Q22", "chunk_id": "U1-p03-c01", "relevant": 1, "matched_sections": ["ডিজিটাল বৈষম্য ও প্রবেশাধিকার"]}
+{"question_id": "U1-Q23", "chunk_id": "U1-p02-c01", "relevant": 1, "matched_sections": ["ডিজিটাল বাংলাদেশ ও শিক্ষায় প্রযুক্তি"]}
+{"question_id": "U1-Q23", "chunk_id": "U1-p03-c01", "relevant": 1, "matched_sections": ["শিক্ষক প্রশিক্ষণ ও গুণগত মান"]}
+{"question_id": "U1-Q23", "chunk_id": "U1-p03-c02", "relevant": 1, "matched_sections": ["শিক্ষক প্রশিক্ষণ ও গুণগত মান"]}
+{"question_id": "U1-Q24", "chunk_id": "U1-p02-c04", "relevant": 1, "matched_sections": ["ডিজিটাল বৈষম্য ও প্রবেশাধিকার"]}
+{"question_id": "U1-Q24", "chunk_id": "U1-p03-c01", "relevant": 1, "matched_sections": ["ডিজিটাল বৈষম্য ও প্রবেশাধিকার"]}
+{"question_id": "U1-Q25", "chunk_id": "U1-p03-c04", "relevant": 1, "matched_sections": ["চ্যালেঞ্জ ও সীমাবদ্ধতা"]}
+{"question_id": "U2-Q01", "chunk_id": "U2-p01-c02", "relevant": 1, "matched_sections": ["দুর্যোগের প্রকারভেদ"]}
+{"question_id": "U2-Q02", "chunk_id": "U2-p02-c02", "relevant": 1, "matched_sections": ["আগাম সতর্কীকরণ ব্যবস্থা"]}
+{"question_id": "U2-Q03", "chunk_id": "U2-p01-c03", "relevant": 1, "matched_sections": ["ঘূর্ণিঝড় ও উপকূলীয় ঝুঁকি"]}
+{"question_id": "U2-Q03", "chunk_id": "U2-p01-c04", "relevant": 1, "matched_sections": ["ঘূর্ণিঝড় ও উপকূলীয় ঝুঁকি"]}
+{"question_id": "U2-Q04", "chunk_id": "U2-p02-c03", "relevant": 1, "matched_sections": ["প্রাতিষ্ঠানিক কাঠামো ও নীতি"]}
+{"question_id": "U2-Q04", "chunk_id": "U2-p02-c04", "relevant": 1, "matched_sections": ["প্রাতিষ্ঠানিক কাঠামো ও নীতি"]}
+{"question_id": "U2-Q05", "chunk_id": "U2-p03-c03", "relevant": 1, "matched_sections": ["পুনর্বাসন ও পুনর্গঠন"]}
+{"question_id": "U2-Q06", "chunk_id": "U2-p02-c02", "relevant": 1, "matched_sections": ["আগাম সতর্কীকরণ ব্যবস্থা"]}
+{"question_id": "U2-Q07", "chunk_id": "U2-p01-c03", "relevant": 1, "matched_sections": ["ঘূর্ণিঝড় ও উপকূলীয় ঝুঁকি"]}
+{"question_id": "U2-Q07", "chunk_id": "U2-p01-c04", "relevant": 1, "matched_sections": ["ঘূর্ণিঝড় ও উপকূলীয় ঝুঁকি"]}
+{"question_id": "U2-Q08", "chunk_id": "U2-p03-c01", "relevant": 1, "matched_sections": ["সম্প্রদায়ভিত্তিক দুর্যোগ প্রস্তুতি"]}
+{"question_id": "U2-Q09", "chunk_id": "U2-p03-c04", "relevant": 1, "matched_sections": ["প্রযুক্তির ব্যবহার"]}
+{"question_id": "U2-Q09", "chunk_id": "U2-p04-c01", "relevant": 1, "matched_sections": ["প্রযুক্তির ব্যবহার"]}
+{"question_id": "U2-Q10", "chunk_id": "U2-p02-c01", "relevant": 1, "matched_sections": ["বন্যা ব্যবস্থাপনা"]}
+{"question_id": "U2-Q11", "chunk_id": "U2-p03-c03", "relevant": 1, "matched_sections": ["পুনর্বাসন ও পুনর্গঠন"]}
+{"question_id": "U2-Q12", "chunk_id": "U2-p01-c01", "relevant": 1, "matched_sections": ["ভূমিকা"]}
+{"question_id": "U2-Q12", "chunk_id": "U2-p04-c02", "relevant": 1, "matched_sections": ["উপসংহার"]}
+{"question_id": "U2-Q12", "chunk_id": "U2-p04-c03", "relevant": 1, "matched_sections": ["উপসংহার"]}
+{"question_id": "U2-Q13", "chunk_id": "U2-p03-c02", "relevant": 1, "matched_sections": ["জলবায়ু পরিবর্তন ও দুর্যোগ ঝুঁকি"]}
+{"question_id": "U2-Q14", "chunk_id": "U2-p02-c03", "relevant": 1, "matched_sections": ["প্রাতিষ্ঠানিক কাঠামো ও নীতি"]}
+{"question_id": "U2-Q14", "chunk_id": "U2-p02-c04", "relevant": 1, "matched_sections": ["প্রাতিষ্ঠানিক কাঠামো ও নীতি"]}
+{"question_id": "U2-Q15", "chunk_id": "U2-p03-c01", "relevant": 1, "matched_sections": ["সম্প্রদায়ভিত্তিক দুর্যোগ প্রস্তুতি"]}
+{"question_id": "U2-Q16", "chunk_id": "U2-p01-c02", "relevant": 1, "matched_sections": ["দুর্যোগের প্রকারভেদ"]}
+{"question_id": "U2-Q17", "chunk_id": "U2-p01-c03", "relevant": 1, "matched_sections": ["ঘূর্ণিঝড় ও উপকূলীয় ঝুঁকি"]}
+{"question_id": "U2-Q17", "chunk_id": "U2-p01-c04", "relevant": 1, "matched_sections": ["ঘূর্ণিঝড় ও উপকূলীয় ঝুঁকি"]}
+{"question_id": "U2-Q17", "chunk_id": "U2-p02-c02", "relevant": 1, "matched_sections": ["আগাম সতর্কীকরণ ব্যবস্থা"]}
+{"question_id": "U2-Q18", "chunk_id": "U2-p03-c01", "relevant": 1, "matched_sections": ["সম্প্রদায়ভিত্তিক দুর্যোগ প্রস্তুতি"]}
+{"question_id": "U2-Q19", "chunk_id": "U2-p03-c04", "relevant": 1, "matched_sections": ["প্রযুক্তির ব্যবহার"]}
+{"question_id": "U2-Q19", "chunk_id": "U2-p04-c01", "relevant": 1, "matched_sections": ["প্রযুক্তির ব্যবহার"]}
+{"question_id": "U2-Q20", "chunk_id": "U2-p03-c02", "relevant": 1, "matched_sections": ["জলবায়ু পরিবর্তন ও দুর্যোগ ঝুঁকি"]}
+{"question_id": "U2-Q21", "chunk_id": "U2-p02-c03", "relevant": 1, "matched_sections": ["প্রাতিষ্ঠানিক কাঠামো ও নীতি"]}
+{"question_id": "U2-Q21", "chunk_id": "U2-p02-c04", "relevant": 1, "matched_sections": ["প্রাতিষ্ঠানিক কাঠামো ও নীতি"]}
+{"question_id": "U2-Q22", "chunk_id": "U2-p02-c02", "relevant": 1, "matched_sections": ["আগাম সতর্কীকরণ ব্যবস্থা"]}
+{"question_id": "U2-Q22", "chunk_id": "U2-p01-c03", "relevant": 1, "matched_sections": ["ঘূর্ণিঝড় ও উপকূলীয় ঝুঁকি"]}
+{"question_id": "U2-Q22", "chunk_id": "U2-p01-c04", "relevant": 1, "matched_sections": ["ঘূর্ণিঝড় ও উপকূলীয় ঝুঁকি"]}
+{"question_id": "U2-Q23", "chunk_id": "U2-p03-c02", "relevant": 1, "matched_sections": ["জলবায়ু পরিবর্তন ও দুর্যোগ ঝুঁকি"]}
+{"question_id": "U2-Q23", "chunk_id": "U2-p02-c01", "relevant": 1, "matched_sections": ["বন্যা ব্যবস্থাপনা"]}
+{"question_id": "U2-Q24", "chunk_id": "U2-p02-c01", "relevant": 1, "matched_sections": ["বন্যা ব্যবস্থাপনা"]}
+{"question_id": "U2-Q25", "chunk_id": "U2-p04-c01", "relevant": 1, "matched_sections": ["চ্যালেঞ্জ ও সীমাবদ্ধতা"]}
+{"question_id": "U2-Q25", "chunk_id": "U2-p04-c02", "relevant": 1, "matched_sections": ["চ্যালেঞ্জ ও সীমাবদ্ধতা"]}
+{"question_id": "I1-Q01", "chunk_id": "I1-p01-c03", "relevant": 1, "matched_sections": ["প্রধান ফসল ও উৎপাদন"]}
+{"question_id": "I1-Q02", "chunk_id": "I1-p01-c03", "relevant": 1, "matched_sections": ["প্রধান ফসল ও উৎপাদন"]}
+{"question_id": "I1-Q03", "chunk_id": "I1-p01-c03", "relevant": 1, "matched_sections": ["প্রধান ফসল ও উৎপাদন"]}
+{"question_id": "I1-Q04", "chunk_id": "I1-p02-c03", "relevant": 1, "matched_sections": ["খাদ্য নিরাপত্তার ধারণা"]}
+{"question_id": "I1-Q05", "chunk_id": "I1-p01-c03", "relevant": 1, "matched_sections": ["প্রধান ফসল ও উৎপাদন"]}
+{"question_id": "I1-Q05", "chunk_id": "I1-p02-c02", "relevant": 1, "matched_sections": ["সেচ ও পানি ব্যবস্থাপনা"]}
+{"question_id": "I1-Q06", "chunk_id": "I1-p02-c01", "relevant": 1, "matched_sections": ["সবুজ বিপ্লব ও প্রযুক্তির ভূমিকা"]}
+{"question_id": "I1-Q07", "chunk_id": "I1-p02-c02", "relevant": 1, "matched_sections": ["সেচ ও পানি ব্যবস্থাপনা"]}
+{"question_id": "I1-Q08", "chunk_id": "I1-p03-c01", "relevant": 1, "matched_sections": ["পুষ্টি ও খাদ্যের বৈচিত্র্য"]}
+{"question_id": "I1-Q08", "chunk_id": "I1-p02-c03", "relevant": 1, "matched_sections": ["খাদ্য নিরাপত্তার ধারণা"]}
+{"question_id": "I1-Q09", "chunk_id": "I1-p03-c02", "relevant": 1, "matched_sections": ["কৃষিজমি হ্রাস ও নগরায়ণ"]}
+{"question_id": "I1-Q09", "chunk_id": "I1-p03-c03", "relevant": 1, "matched_sections": ["কৃষিজমি হ্রাস ও নগরায়ণ"]}
+{"question_id": "I1-Q10", "chunk_id": "I1-p04-c01", "relevant": 1, "matched_sections": ["সরকারি নীতি ও সহায়তা"]}
+{"question_id": "I1-Q11", "chunk_id": "I1-p04-c02", "relevant": 1, "matched_sections": ["টেকসই কৃষির পথ"]}
+{"question_id": "I1-Q12", "chunk_id": "I1-p02-c03", "relevant": 1, "matched_sections": ["খাদ্য নিরাপত্তার ধারণা"]}
+{"question_id": "I1-Q13", "chunk_id": "I1-p01-c03", "relevant": 1, "matched_sections": ["প্রধান ফসল ও উৎপাদন"]}
+{"question_id": "I1-Q13", "chunk_id": "I1-p03-c01", "relevant": 1, "matched_sections": ["পুষ্টি ও খাদ্যের বৈচিত্র্য"]}
+{"question_id": "I1-Q14", "chunk_id": "I1-p03-c01", "relevant": 1, "matched_sections": ["পুষ্টি ও খাদ্যের বৈচিত্র্য"]}
+{"question_id": "I1-Q15", "chunk_id": "I1-p04-c01", "relevant": 1, "matched_sections": ["সরকারি নীতি ও সহায়তা"]}
+{"question_id": "I1-Q16", "chunk_id": "I1-p01-c03", "relevant": 1, "matched_sections": ["প্রধান ফসল ও উৎপাদন"]}
+{"question_id": "I1-Q17", "chunk_id": "I1-p02-c01", "relevant": 1, "matched_sections": ["সবুজ বিপ্লব ও প্রযুক্তির ভূমিকা"]}
+{"question_id": "I1-Q18", "chunk_id": "I1-p02-c02", "relevant": 1, "matched_sections": ["সেচ ও পানি ব্যবস্থাপনা"]}
+{"question_id": "I1-Q19", "chunk_id": "I1-p03-c02", "relevant": 1, "matched_sections": ["জলবায়ু পরিবর্তন ও কৃষি ঝুঁকি"]}
+{"question_id": "I1-Q20", "chunk_id": "I1-p03-c02", "relevant": 1, "matched_sections": ["কৃষিজমি হ্রাস ও নগরায়ণ"]}
+{"question_id": "I1-Q20", "chunk_id": "I1-p03-c03", "relevant": 1, "matched_sections": ["কৃষিজমি হ্রাস ও নগরায়ণ"]}
+{"question_id": "I1-Q21", "chunk_id": "I1-p04-c01", "relevant": 1, "matched_sections": ["সরকারি নীতি ও সহায়তা"]}
+{"question_id": "I1-Q22", "chunk_id": "I1-p02-c01", "relevant": 1, "matched_sections": ["সবুজ বিপ্লব ও প্রযুক্তির ভূমিকা"]}
+{"question_id": "I1-Q22", "chunk_id": "I1-p02-c02", "relevant": 1, "matched_sections": ["সেচ ও পানি ব্যবস্থাপনা"]}
+{"question_id": "I1-Q23", "chunk_id": "I1-p03-c02", "relevant": 1, "matched_sections": ["কৃষিজমি হ্রাস ও নগরায়ণ", "জলবায়ু পরিবর্তন ও কৃষি ঝুঁকি"]}
+{"question_id": "I1-Q23", "chunk_id": "I1-p03-c03", "relevant": 1, "matched_sections": ["কৃষিজমি হ্রাস ও নগরায়ণ"]}
+{"question_id": "I1-Q24", "chunk_id": "I1-p03-c02", "relevant": 1, "matched_sections": ["জলবায়ু পরিবর্তন ও কৃষি ঝুঁকি"]}
+{"question_id": "I1-Q25", "chunk_id": "I1-p02-c03", "relevant": 1, "matched_sections": ["খাদ্য নিরাপত্তার ধারণা"]}
+{"question_id": "I1-Q25", "chunk_id": "I1-p03-c01", "relevant": 1, "matched_sections": ["পুষ্টি ও খাদ্যের বৈচিত্র্য"]}
+{"question_id": "I2-Q01", "chunk_id": "I2-p02-c01", "relevant": 1, "matched_sections": ["বায়ু ও জলবিদ্যুৎ"]}
+{"question_id": "I2-Q02", "chunk_id": "I2-p02-c02", "relevant": 1, "matched_sections": ["জৈব শক্তি ও বায়োগ্যাস"]}
+{"question_id": "I2-Q03", "chunk_id": "I2-p01-c03", "relevant": 1, "matched_sections": ["সৌরশক্তির সম্ভাবনা"]}
+{"question_id": "I2-Q03", "chunk_id": "I2-p01-c04", "relevant": 1, "matched_sections": ["সৌরশক্তির সম্ভাবনা"]}
+{"question_id": "I2-Q04", "chunk_id": "I2-p01-c02", "relevant": 1, "matched_sections": ["জ্বালানি পরিস্থিতি ও নির্ভরতা"]}
+{"question_id": "I2-Q05", "chunk_id": "I2-p04-c01", "relevant": 1, "matched_sections": ["নীতি ও ভবিষ্যৎ লক্ষ্য"]}
+{"question_id": "I2-Q06", "chunk_id": "I2-p01-c03", "relevant": 1, "matched_sections": ["সৌরশক্তির সম্ভাবনা"]}
+{"question_id": "I2-Q06", "chunk_id": "I2-p01-c04", "relevant": 1, "matched_sections": ["সৌরশক্তির সম্ভাবনা"]}
+{"question_id": "I2-Q07", "chunk_id": "I2-p02-c02", "relevant": 1, "matched_sections": ["জৈব শক্তি ও বায়োগ্যাস"]}
+{"question_id": "I2-Q08", "chunk_id": "I2-p01-c02", "relevant": 1, "matched_sections": ["জ্বালানি পরিস্থিতি ও নির্ভরতা"]}
+{"question_id": "I2-Q09", "chunk_id": "I2-p02-c03", "relevant": 1, "matched_sections": ["গ্রামীণ বিদ্যুতায়নে ভূমিকা"]}
+{"question_id": "I2-Q09", "chunk_id": "I2-p02-c04", "relevant": 1, "matched_sections": ["গ্রামীণ বিদ্যুতায়নে ভূমিকা"]}
+{"question_id": "I2-Q10", "chunk_id": "I2-p03-c03", "relevant": 1, "matched_sections": ["চ্যালেঞ্জ ও প্রতিবন্ধকতা"]}
+{"question_id": "I2-Q10", "chunk_id": "I2-p03-c04", "relevant": 1, "matched_sections": ["চ্যালেঞ্জ ও প্রতিবন্ধকতা"]}
+{"question_id": "I2-Q11", "chunk_id": "I2-p03-c02", "relevant": 1, "matched_sections": ["অর্থনৈতিক দিক"]}
+{"question_id": "I2-Q12", "chunk_id": "I2-p01-c02", "relevant": 1, "matched_sections": ["জ্বালানি পরিস্থিতি ও নির্ভরতা"]}
+{"question_id": "I2-Q12", "chunk_id": "I2-p04-c02", "relevant": 1, "matched_sections": ["উপসংহার"]}
+{"question_id": "I2-Q12", "chunk_id": "I2-p04-c03", "relevant": 1, "matched_sections": ["উপসংহার"]}
+{"question_id": "I2-Q13", "chunk_id": "I2-p03-c01", "relevant": 1, "matched_sections": ["পরিবেশগত সুবিধা"]}
+{"question_id": "I2-Q14", "chunk_id": "I2-p03-c02", "relevant": 1, "matched_sections": ["অর্থনৈতিক দিক"]}
+{"question_id": "I2-Q15", "chunk_id": "I2-p01-c02", "relevant": 1, "matched_sections": ["জ্বালানি পরিস্থিতি ও নির্ভরতা"]}
+{"question_id": "I2-Q16", "chunk_id": "I2-p01-c03", "relevant": 1, "matched_sections": ["সৌরশক্তির সম্ভাবনা"]}
+{"question_id": "I2-Q16", "chunk_id": "I2-p01-c04", "relevant": 1, "matched_sections": ["সৌরশক্তির সম্ভাবনা"]}
+{"question_id": "I2-Q17", "chunk_id": "I2-p02-c02", "relevant": 1, "matched_sections": ["জৈব শক্তি ও বায়োগ্যাস"]}
+{"question_id": "I2-Q18", "chunk_id": "I2-p01-c02", "relevant": 1, "matched_sections": ["জ্বালানি পরিস্থিতি ও নির্ভরতা"]}
+{"question_id": "I2-Q19", "chunk_id": "I2-p02-c03", "relevant": 1, "matched_sections": ["গ্রামীণ বিদ্যুতায়নে ভূমিকা"]}
+{"question_id": "I2-Q19", "chunk_id": "I2-p02-c04", "relevant": 1, "matched_sections": ["গ্রামীণ বিদ্যুতায়নে ভূমিকা"]}
+{"question_id": "I2-Q20", "chunk_id": "I2-p03-c01", "relevant": 1, "matched_sections": ["পরিবেশগত সুবিধা"]}
+{"question_id": "I2-Q21", "chunk_id": "I2-p03-c03", "relevant": 1, "matched_sections": ["চ্যালেঞ্জ ও প্রতিবন্ধকতা"]}
+{"question_id": "I2-Q21", "chunk_id": "I2-p03-c04", "relevant": 1, "matched_sections": ["চ্যালেঞ্জ ও প্রতিবন্ধকতা"]}
+{"question_id": "I2-Q22", "chunk_id": "I2-p03-c01", "relevant": 1, "matched_sections": ["পরিবেশগত সুবিধা"]}
+{"question_id": "I2-Q22", "chunk_id": "I2-p03-c03", "relevant": 1, "matched_sections": ["চ্যালেঞ্জ ও প্রতিবন্ধকতা"]}
+{"question_id": "I2-Q22", "chunk_id": "I2-p03-c04", "relevant": 1, "matched_sections": ["চ্যালেঞ্জ ও প্রতিবন্ধকতা"]}
+{"question_id": "I2-Q23", "chunk_id": "I2-p02-c03", "relevant": 1, "matched_sections": ["গ্রামীণ বিদ্যুতায়নে ভূমিকা"]}
+{"question_id": "I2-Q23", "chunk_id": "I2-p02-c04", "relevant": 1, "matched_sections": ["গ্রামীণ বিদ্যুতায়নে ভূমিকা"]}
+{"question_id": "I2-Q23", "chunk_id": "I2-p03-c01", "relevant": 1, "matched_sections": ["পরিবেশগত সুবিধা"]}
+{"question_id": "I2-Q24", "chunk_id": "I2-p03-c02", "relevant": 1, "matched_sections": ["অর্থনৈতিক দিক"]}
+{"question_id": "I2-Q24", "chunk_id": "I2-p03-c03", "relevant": 1, "matched_sections": ["চ্যালেঞ্জ ও প্রতিবন্ধকতা"]}
+{"question_id": "I2-Q24", "chunk_id": "I2-p03-c04", "relevant": 1, "matched_sections": ["চ্যালেঞ্জ ও প্রতিবন্ধকতা"]}
+{"question_id": "I2-Q25", "chunk_id": "I2-p02-c02", "relevant": 1, "matched_sections": ["জৈব শক্তি ও বায়োগ্যাস"]}
+{"question_id": "E1-Q01", "chunk_id": "E1-p01-c02", "relevant": 1, "matched_sections": ["Understanding AI in the Educational Context"]}
+{"question_id": "E1-Q01", "chunk_id": "E1-p01-c03", "relevant": 1, "matched_sections": ["Understanding AI in the Educational Context"]}
+{"question_id": "E1-Q02", "chunk_id": "E1-p02-c01", "relevant": 1, "matched_sections": ["Intelligent Tutoring Systems"]}
+{"question_id": "E1-Q02", "chunk_id": "E1-p02-c02", "relevant": 1, "matched_sections": ["Intelligent Tutoring Systems"]}
+{"question_id": "E1-Q03", "chunk_id": "E1-p03-c01", "relevant": 1, "matched_sections": ["Accessibility and Inclusion"]}
+{"question_id": "E1-Q03", "chunk_id": "E1-p03-c02", "relevant": 1, "matched_sections": ["Accessibility and Inclusion"]}
+{"question_id": "E1-Q04", "chunk_id": "E1-p02-c02", "relevant": 1, "matched_sections": ["Automated Assessment and Feedback"]}
+{"question_id": "E1-Q04", "chunk_id": "E1-p02-c03", "relevant": 1, "matched_sections": ["Automated Assessment and Feedback"]}
+{"question_id": "E1-Q05", "chunk_id": "E1-p02-c04", "relevant": 1, "matched_sections": ["AI for Teachers and Administration"]}
+{"question_id": "E1-Q05", "chunk_id": "E1-p02-c05", "relevant": 1, "matched_sections": ["AI for Teachers and Administration"]}
+{"question_id": "E1-Q06", "chunk_id": "E1-p01-c04", "relevant": 1, "matched_sections": ["Personalized Learning"]}
+{"question_id": "E1-Q06", "chunk_id": "E1-p01-c05", "relevant": 1, "matched_sections": ["Personalized Learning"]}
+{"question_id": "E1-Q07", "chunk_id": "E1-p02-c01", "relevant": 1, "matched_sections": ["Intelligent Tutoring Systems"]}
+{"question_id": "E1-Q07", "chunk_id": "E1-p02-c02", "relevant": 1, "matched_sections": ["Intelligent Tutoring Systems"]}
+{"question_id": "E1-Q08", "chunk_id": "E1-p03-c01", "relevant": 1, "matched_sections": ["Accessibility and Inclusion"]}
+{"question_id": "E1-Q08", "chunk_id": "E1-p03-c02", "relevant": 1, "matched_sections": ["Accessibility and Inclusion"]}
+{"question_id": "E1-Q09", "chunk_id": "E1-p02-c04", "relevant": 1, "matched_sections": ["AI for Teachers and Administration"]}
+{"question_id": "E1-Q09", "chunk_id": "E1-p02-c05", "relevant": 1, "matched_sections": ["AI for Teachers and Administration"]}
+{"question_id": "E1-Q10", "chunk_id": "E1-p03-c02", "relevant": 1, "matched_sections": ["Challenges and Ethical Concerns"]}
+{"question_id": "E1-Q10", "chunk_id": "E1-p03-c03", "relevant": 1, "matched_sections": ["Challenges and Ethical Concerns"]}
+{"question_id": "E1-Q11", "chunk_id": "E1-p03-c04", "relevant": 1, "matched_sections": ["The Changing Role of Teachers"]}
+{"question_id": "E1-Q11", "chunk_id": "E1-p03-c05", "relevant": 1, "matched_sections": ["The Changing Role of Teachers"]}
+{"question_id": "E1-Q12", "chunk_id": "E1-p02-c02", "relevant": 1, "matched_sections": ["Automated Assessment and Feedback", "Intelligent Tutoring Systems"]}
+{"question_id": "E1-Q12", "chunk_id": "E1-p02-c03", "relevant": 1, "matched_sections": ["Automated Assessment and Feedback"]}
+{"question_id": "E1-Q12", "chunk_id": "E1-p02-c01", "relevant": 1, "matched_sections": ["Intelligent Tutoring Systems"]}
+{"question_id": "E1-Q13", "chunk_id": "E1-p03-c02", "relevant": 1, "matched_sections": ["Challenges and Ethical Concerns"]}
+{"question_id": "E1-Q13", "chunk_id": "E1-p03-c03", "relevant": 1, "matched_sections": ["Challenges and Ethical Concerns"]}
+{"question_id": "E1-Q14", "chunk_id": "E1-p03-c04", "relevant": 1, "matched_sections": ["The Changing Role of Teachers"]}
+{"question_id": "E1-Q14", "chunk_id": "E1-p03-c05", "relevant": 1, "matched_sections": ["The Changing Role of Teachers"]}
+{"question_id": "E1-Q15", "chunk_id": "E1-p04-c01", "relevant": 1, "matched_sections": ["Future Directions"]}
+{"question_id": "E1-Q15", "chunk_id": "E1-p04-c02", "relevant": 1, "matched_sections": ["Future Directions"]}
+{"question_id": "E1-Q15", "chunk_id": "E1-p03-c02", "relevant": 1, "matched_sections": ["Challenges and Ethical Concerns"]}
+{"question_id": "E1-Q15", "chunk_id": "E1-p03-c03", "relevant": 1, "matched_sections": ["Challenges and Ethical Concerns"]}
+{"question_id": "E1-Q16", "chunk_id": "E1-p01-c04", "relevant": 1, "matched_sections": ["Personalized Learning"]}
+{"question_id": "E1-Q16", "chunk_id": "E1-p01-c05", "relevant": 1, "matched_sections": ["Personalized Learning"]}
+{"question_id": "E1-Q17", "chunk_id": "E1-p02-c01", "relevant": 1, "matched_sections": ["Intelligent Tutoring Systems"]}
+{"question_id": "E1-Q17", "chunk_id": "E1-p02-c02", "relevant": 1, "matched_sections": ["Intelligent Tutoring Systems"]}
+{"question_id": "E1-Q18", "chunk_id": "E1-p02-c02", "relevant": 1, "matched_sections": ["Automated Assessment and Feedback"]}
+{"question_id": "E1-Q18", "chunk_id": "E1-p02-c03", "relevant": 1, "matched_sections": ["Automated Assessment and Feedback"]}
+{"question_id": "E1-Q19", "chunk_id": "E1-p03-c01", "relevant": 1, "matched_sections": ["Accessibility and Inclusion"]}
+{"question_id": "E1-Q19", "chunk_id": "E1-p03-c02", "relevant": 1, "matched_sections": ["Accessibility and Inclusion"]}
+{"question_id": "E1-Q20", "chunk_id": "E1-p03-c02", "relevant": 1, "matched_sections": ["Challenges and Ethical Concerns"]}
+{"question_id": "E1-Q20", "chunk_id": "E1-p03-c03", "relevant": 1, "matched_sections": ["Challenges and Ethical Concerns"]}
+{"question_id": "E1-Q21", "chunk_id": "E1-p03-c04", "relevant": 1, "matched_sections": ["The Changing Role of Teachers"]}
+{"question_id": "E1-Q21", "chunk_id": "E1-p03-c05", "relevant": 1, "matched_sections": ["The Changing Role of Teachers"]}
+{"question_id": "E1-Q22", "chunk_id": "E1-p01-c04", "relevant": 1, "matched_sections": ["Personalized Learning"]}
+{"question_id": "E1-Q22", "chunk_id": "E1-p01-c05", "relevant": 1, "matched_sections": ["Personalized Learning"]}
+{"question_id": "E1-Q22", "chunk_id": "E1-p02-c01", "relevant": 1, "matched_sections": ["Intelligent Tutoring Systems"]}
+{"question_id": "E1-Q22", "chunk_id": "E1-p02-c02", "relevant": 1, "matched_sections": ["Intelligent Tutoring Systems"]}
+{"question_id": "E1-Q23", "chunk_id": "E1-p03-c01", "relevant": 1, "matched_sections": ["Accessibility and Inclusion"]}
+{"question_id": "E1-Q23", "chunk_id": "E1-p03-c02", "relevant": 1, "matched_sections": ["Accessibility and Inclusion", "Challenges and Ethical Concerns"]}
+{"question_id": "E1-Q23", "chunk_id": "E1-p03-c03", "relevant": 1, "matched_sections": ["Challenges and Ethical Concerns"]}
+{"question_id": "E1-Q24", "chunk_id": "E1-p03-c02", "relevant": 1, "matched_sections": ["Challenges and Ethical Concerns"]}
+{"question_id": "E1-Q24", "chunk_id": "E1-p03-c03", "relevant": 1, "matched_sections": ["Challenges and Ethical Concerns"]}
+{"question_id": "E1-Q24", "chunk_id": "E1-p03-c04", "relevant": 1, "matched_sections": ["The Changing Role of Teachers"]}
+{"question_id": "E1-Q24", "chunk_id": "E1-p03-c05", "relevant": 1, "matched_sections": ["The Changing Role of Teachers"]}
+{"question_id": "E1-Q25", "chunk_id": "E1-p02-c02", "relevant": 1, "matched_sections": ["Automated Assessment and Feedback"]}
+{"question_id": "E1-Q25", "chunk_id": "E1-p02-c03", "relevant": 1, "matched_sections": ["Automated Assessment and Feedback"]}
+{"question_id": "E2-Q01", "chunk_id": "E2-p01-c02", "relevant": 1, "matched_sections": ["Understanding Climate Change"]}
+{"question_id": "E2-Q01", "chunk_id": "E2-p01-c03", "relevant": 1, "matched_sections": ["Understanding Climate Change"]}
+{"question_id": "E2-Q02", "chunk_id": "E2-p01-c04", "relevant": 1, "matched_sections": ["Cities and Their Environmental Impact"]}
+{"question_id": "E2-Q02", "chunk_id": "E2-p01-c05", "relevant": 1, "matched_sections": ["Cities and Their Environmental Impact"]}
+{"question_id": "E2-Q03", "chunk_id": "E2-p03-c02", "relevant": 1, "matched_sections": ["Waste Management and Circular Economy"]}
+{"question_id": "E2-Q03", "chunk_id": "E2-p03-c03", "relevant": 1, "matched_sections": ["Waste Management and Circular Economy"]}
+{"question_id": "E2-Q04", "chunk_id": "E2-p02-c02", "relevant": 1, "matched_sections": ["Renewable Energy and Efficiency"]}
+{"question_id": "E2-Q04", "chunk_id": "E2-p02-c03", "relevant": 1, "matched_sections": ["Renewable Energy and Efficiency"]}
+{"question_id": "E2-Q05", "chunk_id": "E2-p03-c04", "relevant": 1, "matched_sections": ["Climate Resilience and Adaptation"]}
+{"question_id": "E2-Q05", "chunk_id": "E2-p03-c05", "relevant": 1, "matched_sections": ["Climate Resilience and Adaptation"]}
+{"question_id": "E2-Q06", "chunk_id": "E2-p02-c01", "relevant": 1, "matched_sections": ["Sustainable Urban Planning"]}
+{"question_id": "E2-Q06", "chunk_id": "E2-p02-c02", "relevant": 1, "matched_sections": ["Sustainable Urban Planning"]}
+{"question_id": "E2-Q07", "chunk_id": "E2-p03-c01", "relevant": 1, "matched_sections": ["Green Spaces and Urban Nature"]}
+{"question_id": "E2-Q07", "chunk_id": "E2-p03-c02", "relevant": 1, "matched_sections": ["Green Spaces and Urban Nature"]}
+{"question_id": "E2-Q08", "chunk_id": "E2-p02-c04", "relevant": 1, "matched_sections": ["Sustainable Transportation"]}
+{"question_id": "E2-Q08", "chunk_id": "E2-p02-c05", "relevant": 1, "matched_sections": ["Sustainable Transportation"]}
+{"question_id": "E2-Q09", "chunk_id": "E2-p03-c02", "relevant": 1, "matched_sections": ["Waste Management and Circular Economy"]}
+{"question_id": "E2-Q09", "chunk_id": "E2-p03-c03", "relevant": 1, "matched_sections": ["Waste Management and Circular Economy"]}
+{"question_id": "E2-Q10", "chunk_id": "E2-p03-c04", "relevant": 1, "matched_sections": ["Climate Resilience and Adaptation"]}
+{"question_id": "E2-Q10", "chunk_id": "E2-p03-c05", "relevant": 1, "matched_sections": ["Climate Resilience and Adaptation"]}
+{"question_id": "E2-Q11", "chunk_id": "E2-p04-c01", "relevant": 1, "matched_sections": ["Governance and Community Participation"]}
+{"question_id": "E2-Q11", "chunk_id": "E2-p04-c02", "relevant": 1, "matched_sections": ["Governance and Community Participation"]}
+{"question_id": "E2-Q12", "chunk_id": "E2-p01-c04", "relevant": 1, "matched_sections": ["Cities and Their Environmental Impact"]}
+{"question_id": "E2-Q12", "chunk_id": "E2-p01-c05", "relevant": 1, "matched_sections": ["Cities and Their Environmental Impact"]}
+{"question_id": "E2-Q12", "chunk_id": "E2-p01-c01", "relevant": 1, "matched_sections": ["Introduction"]}
+{"question_id": "E2-Q12", "chunk_id": "E2-p01-c02", "relevant": 1, "matched_sections": ["Introduction"]}
+{"question_id": "E2-Q13", "chunk_id": "E2-p01-c04", "relevant": 1, "matched_sections": ["Cities and Their Environmental Impact"]}
+{"question_id": "E2-Q13", "chunk_id": "E2-p01-c05", "relevant": 1, "matched_sections": ["Cities and Their Environmental Impact"]}
+{"question_id": "E2-Q14", "chunk_id": "E2-p03-c04", "relevant": 1, "matched_sections": ["Climate Resilience and Adaptation"]}
+{"question_id": "E2-Q14", "chunk_id": "E2-p03-c05", "relevant": 1, "matched_sections": ["Climate Resilience and Adaptation"]}
+{"question_id": "E2-Q15", "chunk_id": "E2-p04-c01", "relevant": 1, "matched_sections": ["Governance and Community Participation"]}
+{"question_id": "E2-Q15", "chunk_id": "E2-p04-c02", "relevant": 1, "matched_sections": ["Governance and Community Participation"]}
+{"question_id": "E2-Q16", "chunk_id": "E2-p02-c01", "relevant": 1, "matched_sections": ["Sustainable Urban Planning"]}
+{"question_id": "E2-Q16", "chunk_id": "E2-p02-c02", "relevant": 1, "matched_sections": ["Sustainable Urban Planning"]}
+{"question_id": "E2-Q17", "chunk_id": "E2-p02-c02", "relevant": 1, "matched_sections": ["Renewable Energy and Efficiency"]}
+{"question_id": "E2-Q17", "chunk_id": "E2-p02-c03", "relevant": 1, "matched_sections": ["Renewable Energy and Efficiency"]}
+{"question_id": "E2-Q18", "chunk_id": "E2-p03-c01", "relevant": 1, "matched_sections": ["Green Spaces and Urban Nature"]}
+{"question_id": "E2-Q18", "chunk_id": "E2-p03-c02", "relevant": 1, "matched_sections": ["Green Spaces and Urban Nature"]}
+{"question_id": "E2-Q19", "chunk_id": "E2-p02-c04", "relevant": 1, "matched_sections": ["Sustainable Transportation"]}
+{"question_id": "E2-Q19", "chunk_id": "E2-p02-c05", "relevant": 1, "matched_sections": ["Sustainable Transportation"]}
+{"question_id": "E2-Q20", "chunk_id": "E2-p03-c02", "relevant": 1, "matched_sections": ["Waste Management and Circular Economy"]}
+{"question_id": "E2-Q20", "chunk_id": "E2-p03-c03", "relevant": 1, "matched_sections": ["Waste Management and Circular Economy"]}
+{"question_id": "E2-Q21", "chunk_id": "E2-p03-c04", "relevant": 1, "matched_sections": ["Climate Resilience and Adaptation"]}
+{"question_id": "E2-Q21", "chunk_id": "E2-p03-c05", "relevant": 1, "matched_sections": ["Climate Resilience and Adaptation"]}
+{"question_id": "E2-Q22", "chunk_id": "E2-p02-c04", "relevant": 1, "matched_sections": ["Sustainable Transportation"]}
+{"question_id": "E2-Q22", "chunk_id": "E2-p02-c05", "relevant": 1, "matched_sections": ["Sustainable Transportation"]}
+{"question_id": "E2-Q22", "chunk_id": "E2-p02-c02", "relevant": 1, "matched_sections": ["Renewable Energy and Efficiency"]}
+{"question_id": "E2-Q22", "chunk_id": "E2-p02-c03", "relevant": 1, "matched_sections": ["Renewable Energy and Efficiency"]}
+{"question_id": "E2-Q23", "chunk_id": "E2-p03-c01", "relevant": 1, "matched_sections": ["Green Spaces and Urban Nature"]}
+{"question_id": "E2-Q23", "chunk_id": "E2-p03-c02", "relevant": 1, "matched_sections": ["Green Spaces and Urban Nature"]}
+{"question_id": "E2-Q23", "chunk_id": "E2-p03-c04", "relevant": 1, "matched_sections": ["Climate Resilience and Adaptation"]}
+{"question_id": "E2-Q23", "chunk_id": "E2-p03-c05", "relevant": 1, "matched_sections": ["Climate Resilience and Adaptation"]}
+{"question_id": "E2-Q24", "chunk_id": "E2-p01-c04", "relevant": 1, "matched_sections": ["Cities and Their Environmental Impact"]}
+{"question_id": "E2-Q24", "chunk_id": "E2-p01-c05", "relevant": 1, "matched_sections": ["Cities and Their Environmental Impact"]}
+{"question_id": "E2-Q25", "chunk_id": "E2-p03-c02", "relevant": 1, "matched_sections": ["Waste Management and Circular Economy"]}
+{"question_id": "E2-Q25", "chunk_id": "E2-p03-c03", "relevant": 1, "matched_sections": ["Waste Management and Circular Economy"]}

@@ -1,0 +1,45 @@
+﻿group,n,metric,mean_before,mean_after,difference,ci95_low,ci95_high,p_value,test
+affected (U1/U2),50,R@1,0.14,0.68,0.54,0.36,0.7,0.0,"McNemar exact (only_reference=3, only_compared=30)"
+control (other 6 docs),150,R@1,0.8,0.7867,-0.0133,-0.0333,0.0,0.5,"McNemar exact (only_reference=2, only_compared=0)"
+overall,200,R@1,0.635,0.76,0.125,0.07,0.185,2e-05,"McNemar exact (only_reference=5, only_compared=30)"
+affected / query_language=bn,38,R@1,0.1842,0.7895,0.6053,0.3947,0.7895,2e-05,"McNemar exact (only_reference=3, only_compared=26)"
+affected / query_language=en,12,R@1,0.0,0.3333,0.3333,0.0833,0.5833,0.125,"McNemar exact (only_reference=0, only_compared=4)"
+affected / question_type=Challenging / Indirect,4,R@1,0.25,0.0,-0.25,-0.75,0.0,1.0,"McNemar exact (only_reference=1, only_compared=0)"
+affected / question_type=Conceptual,8,R@1,0.25,0.875,0.625,0.125,1.0,0.125,"McNemar exact (only_reference=1, only_compared=6)"
+affected / question_type=Cross-lingual,12,R@1,0.0,0.3333,0.3333,0.0833,0.5833,0.125,"McNemar exact (only_reference=0, only_compared=4)"
+affected / question_type=Direct / Factual,10,R@1,0.2,1.0,0.8,0.5,1.0,0.00781,"McNemar exact (only_reference=0, only_compared=8)"
+affected / question_type=Multi-hop / Comparative,4,R@1,0.0,1.0,1.0,1.0,1.0,0.125,"McNemar exact (only_reference=0, only_compared=4)"
+affected / question_type=Semantic / Paraphrased,12,R@1,0.1667,0.75,0.5833,0.1667,0.9167,0.03906,"McNemar exact (only_reference=1, only_compared=8)"
+affected (U1/U2),50,R@5,0.38,0.94,0.56,0.4,0.7,0.0,"McNemar exact (only_reference=1, only_compared=29)"
+control (other 6 docs),150,R@5,0.9733,0.9667,-0.0067,-0.0333,0.0133,1.0,"McNemar exact (only_reference=2, only_compared=1)"
+overall,200,R@5,0.825,0.96,0.135,0.085,0.19,0.0,"McNemar exact (only_reference=3, only_compared=30)"
+affected / query_language=bn,38,R@5,0.4474,0.9474,0.5,0.3158,0.6586,2e-05,"McNemar exact (only_reference=1, only_compared=20)"
+affected / query_language=en,12,R@5,0.1667,0.9167,0.75,0.5,1.0,0.00391,"McNemar exact (only_reference=0, only_compared=9)"
+affected / question_type=Challenging / Indirect,4,R@5,0.5,0.5,0.0,-0.75,0.75,1.0,"McNemar exact (only_reference=1, only_compared=1)"
+affected / question_type=Conceptual,8,R@5,0.375,1.0,0.625,0.25,0.875,0.0625,"McNemar exact (only_reference=0, only_compared=5)"
+affected / question_type=Cross-lingual,12,R@5,0.1667,0.9167,0.75,0.5,1.0,0.00391,"McNemar exact (only_reference=0, only_compared=9)"
+affected / question_type=Direct / Factual,10,R@5,0.6,1.0,0.4,0.1,0.7,0.125,"McNemar exact (only_reference=0, only_compared=4)"
+affected / question_type=Multi-hop / Comparative,4,R@5,0.5,1.0,0.5,0.0,1.0,0.5,"McNemar exact (only_reference=0, only_compared=2)"
+affected / question_type=Semantic / Paraphrased,12,R@5,0.3333,1.0,0.6667,0.4167,0.9167,0.00781,"McNemar exact (only_reference=0, only_compared=8)"
+affected (U1/U2),50,R@10,0.48,0.98,0.5,0.36,0.64,0.0,"McNemar exact (only_reference=0, only_compared=25)"
+control (other 6 docs),150,R@10,0.9933,0.9933,0.0,0.0,0.0,1.0,"McNemar exact (only_reference=0, only_compared=0)"
+overall,200,R@10,0.865,0.99,0.125,0.08,0.17,0.0,"McNemar exact (only_reference=0, only_compared=25)"
+affected / query_language=bn,38,R@10,0.5789,1.0,0.4211,0.2632,0.5789,3e-05,"McNemar exact (only_reference=0, only_compared=16)"
+affected / query_language=en,12,R@10,0.1667,0.9167,0.75,0.5,1.0,0.00391,"McNemar exact (only_reference=0, only_compared=9)"
+affected / question_type=Challenging / Indirect,4,R@10,0.75,1.0,0.25,0.0,0.75,1.0,"McNemar exact (only_reference=0, only_compared=1)"
+affected / question_type=Conceptual,8,R@10,0.5,1.0,0.5,0.125,0.875,0.125,"McNemar exact (only_reference=0, only_compared=4)"
+affected / question_type=Cross-lingual,12,R@10,0.1667,0.9167,0.75,0.5,1.0,0.00391,"McNemar exact (only_reference=0, only_compared=9)"
+affected / question_type=Direct / Factual,10,R@10,0.6,1.0,0.4,0.1,0.7,0.125,"McNemar exact (only_reference=0, only_compared=4)"
+affected / question_type=Multi-hop / Comparative,4,R@10,0.75,1.0,0.25,0.0,0.75,1.0,"McNemar exact (only_reference=0, only_compared=1)"
+affected / question_type=Semantic / Paraphrased,12,R@10,0.5,1.0,0.5,0.25,0.75,0.03125,"McNemar exact (only_reference=0, only_compared=6)"
+affected (U1/U2),50,MRR@10,0.2486,0.795,0.5464,0.4182,0.6648,0.0,Wilcoxon signed-rank
+control (other 6 docs),150,MRR@10,0.8733,0.8636,-0.0097,-0.0234,-0.0001,0.11585,Wilcoxon signed-rank
+overall,200,MRR@10,0.7171,0.8465,0.1294,0.084,0.1769,0.0,Wilcoxon signed-rank
+affected / query_language=bn,38,MRR@10,0.3087,0.864,0.5554,0.3954,0.7009,1e-05,Wilcoxon signed-rank
+affected / query_language=en,12,MRR@10,0.0583,0.5764,0.5181,0.3611,0.6806,0.00098,Wilcoxon signed-rank
+affected / question_type=Challenging / Indirect,4,MRR@10,0.3403,0.3125,-0.0278,-0.3715,0.3438,1.0,Wilcoxon signed-rank
+affected / question_type=Conceptual,8,MRR@10,0.3042,0.9375,0.6333,0.2374,0.9583,0.03125,Wilcoxon signed-rank
+affected / question_type=Cross-lingual,12,MRR@10,0.0583,0.5764,0.5181,0.3611,0.6861,0.00098,Wilcoxon signed-rank
+affected / question_type=Direct / Factual,10,MRR@10,0.4,1.0,0.6,0.35,0.8,0.00781,Wilcoxon signed-rank
+affected / question_type=Multi-hop / Comparative,4,MRR@10,0.2232,1.0,0.7768,0.5893,0.9375,0.125,Wilcoxon signed-rank
+affected / question_type=Semantic / Paraphrased,12,MRR@10,0.2535,0.8403,0.5868,0.2847,0.8368,0.00684,Wilcoxon signed-rank

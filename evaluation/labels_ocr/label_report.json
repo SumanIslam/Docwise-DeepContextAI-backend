@@ -1,0 +1,46 @@
+{
+  "rule": {
+    "min_share": 0.3,
+    "min_chars": 150,
+    "review_if_coverage_below": 0.5,
+    "review_if_share_in": [
+      0.15,
+      0.4
+    ]
+  },
+  "inputs_sha256": {
+    "chunks": "3b0f82fd68a8aac1c4025d930a28b3e55bf52839a86c189c0029add0015b5d75",
+    "sections": "ea02b26d6bab4a71b5b33c1948a10cd1ad88f11db703a62136d751e03adc6289",
+    "questions": "dab1cf705b6ce682a2adc760def953806384e0dafc2eb9c8d36ccc6e420da521"
+  },
+  "doc_alignment_ratio": {
+    "B1": 0.964,
+    "B2": 0.906,
+    "U1": 0.98,
+    "U2": 0.991,
+    "I1": 0.96,
+    "I2": 0.911,
+    "E1": 0.998,
+    "E2": 0.998
+  },
+  "chunks": 122,
+  "chunks_with_2plus_labels": 19,
+  "chunks_needing_review": 39,
+  "needs_review_by_doc": {
+    "B1": 5,
+    "B2": 7,
+    "U1": 6,
+    "U2": 4,
+    "I1": 8,
+    "I2": 4,
+    "E1": 4,
+    "E2": 1
+  },
+  "relevant_chunks_per_question": {
+    "min": 1,
+    "max": 4,
+    "mean": 1.76
+  },
+  "questions_with_no_relevant_chunk": [],
+  "questions_with_a_gt_section_missing": []
+}

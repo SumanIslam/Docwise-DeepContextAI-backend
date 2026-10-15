@@ -1,0 +1,30 @@
+{
+  "run_id": "20260925-231936",
+  "evaluation": "answer quality (manual grading)",
+  "created_utc": "2026-09-25T17:26:59+00:00",
+  "pipeline": "deployed: multilingual-e5-small, dense-only, no reranker, OCR-repaired chunks",
+  "llm": "openai/gpt-oss-120b",
+  "temperature": 0.2,
+  "max_tokens": 768,
+  "top_n": 5,
+  "context_chars_per_chunk": 600,
+  "sample_size": 48,
+  "sampling": "first question of each of the 6 types in each of the 8 documents",
+  "inputs_sha256": {
+    "main.py": "fa9b9c7559437ecd86915e9bd91a68beb4702c5d24e96de8feca072340a20f0c",
+    "chunks": "3b0f82fd68a8aac1c4025d930a28b3e55bf52839a86c189c0029add0015b5d75",
+    "questions": "dab1cf705b6ce682a2adc760def953806384e0dafc2eb9c8d36ccc6e420da521"
+  },
+  "environment": {
+    "python": "3.14.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "sentence-transformers": "5.5.1",
+    "qdrant-client": "1.18.0",
+    "groq": "1.2.0"
+  },
+  "mean_seconds_per_answer": 9.1,
+  "answers_with_error": [
+    "S44",
+    "S48"
+  ]
+}

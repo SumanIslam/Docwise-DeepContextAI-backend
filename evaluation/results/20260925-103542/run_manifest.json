@@ -1,0 +1,58 @@
+{
+  "run_id": "20260925-103542",
+  "created_utc": "2026-09-25T04:36:26+00:00",
+  "inputs_sha256": {
+    "main.py": "423bc2e6a7a56d5f5543671a4c4a2f8ca926f3338d6021ac9cf3da1e945bcace",
+    "chunks": "f7d768cb91a7fd35428d9347d1a0c7207c75d79674d88c9fa7064b1a5a0349ad",
+    "questions": "dab1cf705b6ce682a2adc760def953806384e0dafc2eb9c8d36ccc6e420da521",
+    "qrels": "693600ab126a06194771fa531568e185bbee0292c450ff991fda66a4a4a638b1"
+  },
+  "settings": {
+    "scope": "all 8 documents",
+    "top_k": 40,
+    "production_top_n": 5,
+    "rrf_k": 60,
+    "dense_floor": 0.02,
+    "rerank_floor": -6,
+    "rerank_model": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+    "rerank_passage_chars": 512,
+    "bootstrap": 10000,
+    "seed": 12345
+  },
+  "environment": {
+    "python": "3.14.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "sentence-transformers": "5.5.1",
+    "transformers": "5.9.0",
+    "torch": "2.12.0",
+    "qdrant-client": "1.18.0",
+    "rank-bm25": "0.2.2",
+    "regex": "2026.5.9",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1"
+  },
+  "configs": {
+    "D_e5_bengali": {
+      "config": "D_e5_bengali",
+      "model": "intfloat/multilingual-e5-small",
+      "max_seq_length": null,
+      "collection": "docwise_eval_D_e5_small",
+      "role": "supplementary",
+      "query_prefix": "query: ",
+      "passage_prefix": "passage: ",
+      "model_info": {
+        "max_seq_length_default": 512,
+        "max_seq_length_used": 512,
+        "parameters": 117653760,
+        "dimension": 384,
+        "device": "cpu"
+      },
+      "model_load_seconds": 38.21,
+      "reused": false,
+      "index_seconds": 18.179,
+      "mean_retrieval_ms": 73.35,
+      "mean_rerank_ms": 2440.81
+    }
+  },
+  "compare_with": "C:\\Users\\suman\\Downloads\\RAG_Project_JU\\rag-backend\\evaluation\\results\\20260921-232223"
+}

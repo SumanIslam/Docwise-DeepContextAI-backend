@@ -1,0 +1,157 @@
+{
+  "workbook": "C:\\Users\\suman\\Downloads\\RAG_Project_JU\\rag-backend\\evaluation\\answers\\20260925-231936\\grading.xlsx",
+  "rows": 48,
+  "ungraded": [],
+  "excluded_NA": [],
+  "overall": {
+    "n": 48,
+    "accuracy": 1.0,
+    "fully_correct": 1.0,
+    "partly_correct": 0.0,
+    "wrong": 0.0,
+    "grounded_yes": 0.896,
+    "grounded_partial": 0.042,
+    "hallucinated": 0.062,
+    "language_ok": 1.0
+  },
+  "groups": {
+    "doc_type": {
+      "Bijoy Bengali": {
+        "n": 12,
+        "accuracy": 1.0,
+        "fully_correct": 1.0,
+        "partly_correct": 0.0,
+        "wrong": 0.0,
+        "grounded_yes": 0.917,
+        "grounded_partial": 0.0,
+        "hallucinated": 0.083,
+        "language_ok": 1.0
+      },
+      "English": {
+        "n": 12,
+        "accuracy": 1.0,
+        "fully_correct": 1.0,
+        "partly_correct": 0.0,
+        "wrong": 0.0,
+        "grounded_yes": 1.0,
+        "grounded_partial": 0.0,
+        "hallucinated": 0.0,
+        "language_ok": 1.0
+      },
+      "Image-only Bengali": {
+        "n": 12,
+        "accuracy": 1.0,
+        "fully_correct": 1.0,
+        "partly_correct": 0.0,
+        "wrong": 0.0,
+        "grounded_yes": 0.833,
+        "grounded_partial": 0.167,
+        "hallucinated": 0.0,
+        "language_ok": 1.0
+      },
+      "Unicode Bengali": {
+        "n": 12,
+        "accuracy": 1.0,
+        "fully_correct": 1.0,
+        "partly_correct": 0.0,
+        "wrong": 0.0,
+        "grounded_yes": 0.833,
+        "grounded_partial": 0.0,
+        "hallucinated": 0.167,
+        "language_ok": 1.0
+      }
+    },
+    "query_language": {
+      "bn": {
+        "n": 32,
+        "accuracy": 1.0,
+        "fully_correct": 1.0,
+        "partly_correct": 0.0,
+        "wrong": 0.0,
+        "grounded_yes": 0.844,
+        "grounded_partial": 0.062,
+        "hallucinated": 0.094,
+        "language_ok": 1.0
+      },
+      "en": {
+        "n": 16,
+        "accuracy": 1.0,
+        "fully_correct": 1.0,
+        "partly_correct": 0.0,
+        "wrong": 0.0,
+        "grounded_yes": 1.0,
+        "grounded_partial": 0.0,
+        "hallucinated": 0.0,
+        "language_ok": 1.0
+      }
+    },
+    "question_type": {
+      "Challenging / Indirect": {
+        "n": 8,
+        "accuracy": 1.0,
+        "fully_correct": 1.0,
+        "partly_correct": 0.0,
+        "wrong": 0.0,
+        "grounded_yes": 0.625,
+        "grounded_partial": 0.125,
+        "hallucinated": 0.25,
+        "language_ok": 1.0
+      },
+      "Conceptual": {
+        "n": 8,
+        "accuracy": 1.0,
+        "fully_correct": 1.0,
+        "partly_correct": 0.0,
+        "wrong": 0.0,
+        "grounded_yes": 0.875,
+        "grounded_partial": 0.125,
+        "hallucinated": 0.0,
+        "language_ok": 1.0
+      },
+      "Cross-lingual": {
+        "n": 8,
+        "accuracy": 1.0,
+        "fully_correct": 1.0,
+        "partly_correct": 0.0,
+        "wrong": 0.0,
+        "grounded_yes": 1.0,
+        "grounded_partial": 0.0,
+        "hallucinated": 0.0,
+        "language_ok": 1.0
+      },
+      "Direct / Factual": {
+        "n": 8,
+        "accuracy": 1.0,
+        "fully_correct": 1.0,
+        "partly_correct": 0.0,
+        "wrong": 0.0,
+        "grounded_yes": 1.0,
+        "grounded_partial": 0.0,
+        "hallucinated": 0.0,
+        "language_ok": 1.0
+      },
+      "Multi-hop / Comparative": {
+        "n": 8,
+        "accuracy": 1.0,
+        "fully_correct": 1.0,
+        "partly_correct": 0.0,
+        "wrong": 0.0,
+        "grounded_yes": 1.0,
+        "grounded_partial": 0.0,
+        "hallucinated": 0.0,
+        "language_ok": 1.0
+      },
+      "Semantic / Paraphrased": {
+        "n": 8,
+        "accuracy": 1.0,
+        "fully_correct": 1.0,
+        "partly_correct": 0.0,
+        "wrong": 0.0,
+        "grounded_yes": 0.875,
+        "grounded_partial": 0.0,
+        "hallucinated": 0.125,
+        "language_ok": 1.0
+      }
+    }
+  }
+}
